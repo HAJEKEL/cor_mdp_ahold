@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<robot name="extrusion" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:macro name="extrusion_description">
+
+    <!-- the link that is connected to panda_arm -->
+    <link name="top_mount_upper">
+    	<visual>
+    		<origin xyz="0 0 0" rpy="0 0 0" />
+    		<geometry>
+    			<mesh filename="package://boxer_description/meshes/top_plate.stl" />
+    		</geometry>
+    		<material name="Boxer_DarkGrey" />
+    	</visual>
+    	<collision>
+    		<origin xyz="0 0 0" rpy="0 0 0" />
+    		<geometry>
+    			<mesh filename="package://boxer_description/meshes/top_plate_collision.stl" />
+    		</geometry>
+    	</collision>
+    </link>
+
+
+    <link name="extrusion1">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://albert_description/meshes/extrusion.stl" />
+            </geometry>
+            <material name="Boxer_DarkGrey" />
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://albert_description/meshes/extrusion.stl" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="extrusion1_joint" type="fixed">
+        <origin xyz="-0.2785 0.1835 0" rpy="0 0 0" />
+        <parent link="top_mount" />
+        <child link="extrusion1" />
+    </joint>
+
+    <link name="extrusion2">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://albert_description/meshes/extrusion.stl" />
+            </geometry>
+            <material name="Boxer_DarkGrey" />
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://albert_description/meshes/extrusion.stl" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="extrusion2_joint" type="fixed">
+        <origin xyz="0.2785 0.1835 0" rpy="0 0 -1.5707" />
+        <parent link="top_mount" />
+        <child link="extrusion2" />
+    </joint>
+
+
+    <link name="extrusion3">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://albert_description/meshes/extrusion.stl" />
+            </geometry>
+            <material name="Boxer_DarkGrey" />
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://albert_description/meshes/extrusion.stl" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="extrusion3_joint" type="fixed">
+        <origin xyz="0.2785 -0.1835 0" rpy="0 0 3.1414" />
+        <parent link="top_mount" />
+        <child link="extrusion3" />
+    </joint>
+
+    <link name="extrusion4">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://albert_description/meshes/extrusion.stl" />
+            </geometry>
+            <material name="Boxer_DarkGrey" />
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://albert_description/meshes/extrusion.stl" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="extrusion4_joint" type="fixed">
+        <origin xyz="-0.2785 -0.1835 0" rpy="0 0 1.5707" />
+        <parent link="top_mount" />
+        <child link="extrusion4" />
+    </joint>
+
+    <!-- 0.27 in z direction because extrusion is 0.30, and plate is 0.1 -->
+    <joint name="top_mount_joint_upper" type="fixed">
+    	<origin xyz="0.2785 -0.1835 0.31" rpy="0 0 0" />
+    	<parent link="extrusion1" />
+    	<child link="top_mount_upper" />
+    </joint>
+
+
+</xacro:macro>
+</robot>

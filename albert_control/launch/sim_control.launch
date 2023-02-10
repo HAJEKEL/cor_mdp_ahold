@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+  <arg name="ee" default="vacuum"  doc="Which EE setup should be used? Choose between: gripper, gripper_camera, vacuum, none" />
+  <arg name="panda_control_mode" default="effort"/>
+  <arg name="boxer_control_mode" default="diff_drive"/>
+  <arg name="boxer_pid_controller" default="true" doc="Should the gazebo initialize the pid controller for the boxer? Use false if you don't know how to tune the gains and want to apply the command directly"/>
+  <arg name="joint_state_rate" default="100"/>
+
+  <rosparam command="load" file="$(find albert_control)/config/albert_controllers.yaml"/>
+  <rosparam command="load" file="$(find albert_control)/config/sim_controllers.yaml"/>
+  <rosparam command="load" file="$(find boxer_control)/config/control.yaml" />
+  <!-- make frequency of joint states configurable  -->
+  <param name="joint_state_controller/publish_rate" value="$(arg joint_state_rate)" />
+
+  <!-- Joint state controller -->
+  <node name="joint_state_controller_spawner"
+        pkg="controller_manager"
+        type="spawner"
+        respawn="false"
+        output="screen"
+        args="joint_state_controller" />
+
+  <!-- Joint state publisher -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" respawn="false">
+    <param name="use_tf_static" value="true"/>
+  </node>
+
+  <!-- boxer controller_spawner -->
+  <node name="boxer_controller_spawner"
+        pkg="controller_manager"
+        type="spawner"
+        respawn="false"
+        output="screen"
+        args="boxer_velocity_controller"
+  />
+
+  <node pkg="twist_mux" type="twist_mux" name="twist_mux">
+    <rosparam command="load" file="$(find boxer_control)/config/twist_mux.yaml" />
+    <remap from="cmd_vel_out" to="boxer_velocity_controller/cmd_vel"/>
+  </node>
+
+  <!-- boxer pid_gains setting for gazebo_ros_control -->
+  <group if="$(arg boxer_pid_controller)">
+    <rosparam command="load" file="$(find albert_gazebo)/config/boxer_sim_controllers.yaml"/>
+  </group>
+
+
+  <!-- panda controller_spawner -->
+
+  <!-- Moveit control -->
+  <group if="$(eval panda_control_mode == 'moveit')">
+    <rosparam command="load" file="$(find franka_control)/config/default_controllers.yaml"/>
+    <!-- setting(s) for the move_group.launch -->
+    <arg name="pipeline" default="ompl" doc="Options: ompl or chomp or stomp" />
+
+    <node name="controller_spawner_arm" pkg="controller_manager" type="spawner" respawn="false" output="screen"
+      args="franka_state_controller effort_joint_trajectory_controller" />
+    <include file="$(find albert_moveit_config)/launch/move_group.launch">
+      <arg name="load_robot_description" value="false"/>
+      <arg name="pipeline" value="$(arg pipeline)"/>
+    </include>
+  </group>
+
+  <!-- Working Franka Emika example cartesian controller -->
+  <group if="$(eval panda_control_mode == 'example')">
+    <node name="panda_controller_spawner" 
+          pkg="controller_manager" 
+          type="spawner" 
+          respawn="false" 
+          output="screen" 
+          args="franka_state_controller cartesian_impedance_example_controller" 
+    />
+  </group>
+
+  <group unless="$(eval panda_control_mode == 'moveit')">
+    <group unless="$(eval panda_control_mode == 'example')">
+      <node name="panda_controller_spawner" 
+            pkg="controller_manager" 
+            type="spawner" 
+            respawn="false" 
+            output="screen" 
+            args="franka_state_controller panda_joint_$(arg panda_control_mode)_controller"
+      />
+    </group>
+  </group>
+
+  <!-- spawn gripper controller if an EE is selected that has a gripper -->
+  <node pkg="controller_manager"
+        type="spawner"
+        name="panda_gripper_spawner"
+        if="$(eval ee == 'gripper')"
+        args="franka_gripper"
+        respawn="false"
+  />
+  <node pkg="controller_manager"
+        type="spawner"
+        name="panda_gripper_spawner"
+        if="$(eval ee == 'gripper_camera')"
+        args="franka_gripper"
+        respawn="false"
+  />
+
+</launch>

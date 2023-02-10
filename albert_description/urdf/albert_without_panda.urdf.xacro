@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="albert_description">
+  <xacro:include filename="$(find boxer_description)/urdf/boxer.urdf.xacro"/>
+
+  <!-- Extrusion -->
+  <xacro:include filename="$(find albert_description)/urdf/extrusion.xacro"/>
+  <xacro:extrusion_description/>
+</robot>

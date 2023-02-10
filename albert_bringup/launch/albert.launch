@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <arg name="ee" default="vacuum" />
+    <arg name="joint_state_rate" default="30" />
+
+    <!-- Robot model -->
+    <param name="robot_description"
+           command="xacro $(find albert_description)/urdf/albert.urdf.xacro
+                  gazebo:=false
+                  ee:=$(arg ee)
+                  ">
+    </param>
+
+    <!-- Publish combined joint states -->
+    <node name="joint_state_publisher" type="joint_state_publisher" pkg="joint_state_publisher" output="screen">
+        <rosparam param="source_list">[boxer/joint_states, franka_state_controller/joint_states, franka_gripper/joint_states]</rosparam>
+        <param name="rate" value="$(arg joint_state_rate)"/>
+    </node>
+
+    <!-- Publish robot state to /tf using /joint_states -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" respawn="false">
+        <param name="use_tf_static" value="true"/>
+    </node>
+</launch>

@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Robot Customization -->
+  <arg name="boxer_control_mode" default="diff_drive"/>
+  <arg name="panda_control_mode" default="velocity"/>
+  <arg name="boxer_pid_controller" default="true" doc="Should the gazebo initialize the pid controller for the boxer? Use false if you don't know how to tune the gains and want to apply the command directly"/>/>
+  <arg name="arm_id" default="panda" doc="Name of the panda robot to spawn" />
+  <arg name="ee" default="vacuum"  doc="Which EE setup should be used? Choose between: gripper, gripper_camera, vacuum, none" />
+  <arg name="joint_state_rate" default="100"/>
+
+  <arg name="initial_positions"
+       doc="Initial configuration of albert. Specify as a list of name/value pairs in form of '-J [name-of-joint] [value-in-rad]'. Default is a 90 degree bend in the elbow"
+       default="-J $(arg arm_id)_joint1 0
+                -J $(arg arm_id)_joint2 0
+                -J $(arg arm_id)_joint3 0
+                -J $(arg arm_id)_joint4 -1.57079632679
+                -J $(arg arm_id)_joint5 0
+                -J $(arg arm_id)_joint6 1.57079632679
+                -J $(arg arm_id)_joint7 0.785398163397
+                -J $(arg arm_id)_finger_joint1 0.001
+                -J $(arg arm_id)_finger_joint2 0.001
+                -x 0.0
+                -y 0.0
+                -z 0.03
+                -Y 0.0" />
+
+  <include file="$(find albert_description)/launch/load_albert_description.launch">
+      <arg name="gazebo"        value="true"/>
+      <arg name="arm_id"        value="$(arg arm_id)"/>
+      <arg name="ee"            value="$(arg ee)"/>
+  </include>
+
+  <rosparam file="$(find franka_gazebo)/config/franka_hw_sim.yaml" subst_value="true" />
+  <rosparam file="$(find franka_gazebo)/config/sim_controllers.yaml" subst_value="true" />
+
+  <!-- WARNING: To limit effects on gravity compensation, we've kept masses and inertias the same for the different EE setups  -->
+  <param name="m_ee" value="0.76" />
+
+  <node name="$(arg arm_id)_model_spawner"
+        pkg="gazebo_ros"
+        type="spawn_model"
+        args="-param robot_description -urdf -model $(arg arm_id)
+              $(arg initial_positions)" />
+
+  <!-- Spawn required ROS controllers -->
+  <include file="$(find albert_control)/launch/sim_control.launch">
+      <arg name="boxer_control_mode" value="$(arg boxer_control_mode)"/>
+      <arg name="panda_control_mode" value="$(arg panda_control_mode)"/>
+      <arg name="boxer_pid_controller" value="$(arg boxer_pid_controller)"/>
+      <arg name="ee" value="$(arg ee)"/>
+      <arg name="joint_state_rate" value="$(arg joint_state_rate)"/>
+  </include>
+
+</launch>

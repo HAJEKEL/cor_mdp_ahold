@@ -1,0 +1,2 @@
+set(cpr_common_msgs_MESSAGE_FILES "msg/Attribute.msg;msg/AutonomyMode.msg;msg/ControlState.msg;msg/RobotState.msg;msg/Sources.msg;msg/ControlSelectionState.msg;msg/SafetyStatus.msg;msg/WheelDifferentialCap.msg;msg/WheelDifferentialCapTable.msg;msg/GeometryArray.msg;msg/LocalizationStatus.msg;msg/SlamMode.msg;msg/GeometryFeature.msg;msg/MotionState.msg;msg/SourcesList.msg;msg/StringArray.msg")
+set(cpr_common_msgs_SERVICE_FILES "")

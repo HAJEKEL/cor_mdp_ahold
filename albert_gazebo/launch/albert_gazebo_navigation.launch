@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Gazebo & GUI Configuration -->
+  <arg name="gui"          default="true"  doc="Should the gazebo GUI be launched?" />
+  <arg name="paused"       default="false" doc="Should the simulation directly be stopped at 0s?" />
+  <arg name="world"        default="AH_store" doc="World name for gazebo to use (without .world extension), e.g. empty or AH_store. When an empty world is used, make sure to not use AMCL for localization as there is no pre-made map" />
+  <arg name="rviz"         default="true" doc="Should RViz be launched?" />
+  <arg name="use_sim_time" default="true"/>
+  <arg name="debug"        default="false"/>
+  <!-- Robot Customization -->
+  <arg name="arm_id" default="panda" doc="Name of the panda robot to spawn" />
+  <arg name="boxer_control_mode" default="diff_drive"/>
+  <arg name="panda_control_mode" default="velocity" doc="Options: effort or moveit or example (cartesian_impedance_example_controller)"/>
+  <arg name="joint_state_rate" default="500"/>
+  <arg name="ee" default="vacuum"  doc="Which EE setup should be used? Choose between: gripper, gripper_camera, vacuum, none" />
+
+  <!-- navigation stack setup -->
+  <arg name="base_local_planner_yaml" default="$(find albert_gazebo)/config/base_sim_local_planner_params.yaml"/>
+  <arg name="localization"   default="amcl" doc="Options: gmapping or amcl"/>
+  <arg name="initial_pose_x" default="-2.0" />
+  <arg name="initial_pose_y" default="-0.5" />
+  <arg name="initial_pose_a" default="3.14" />
+
+  <!-- Check if using AH_store world, then set spawn configuration in front of shelf -->
+  <group if="$(eval world == 'AH_store')">
+    <arg name="initial_positions"
+         default="-J $(arg arm_id)_joint1 0
+                  -J $(arg arm_id)_joint2 -0.8
+                  -J $(arg arm_id)_joint3 0
+                  -J $(arg arm_id)_joint4 -2.4
+                  -J $(arg arm_id)_joint5 0
+                  -J $(arg arm_id)_joint6 3.14
+                  -J $(arg arm_id)_joint7 0.785398163397
+                  -J $(arg arm_id)_finger_joint1 0.001
+                  -J $(arg arm_id)_finger_joint2 0.001
+                  -x $(arg initial_pose_x)
+                  -y $(arg initial_pose_y)
+                  -z 0.03
+                  -Y $(arg initial_pose_a)" />
+    <include file="$(find albert_gazebo)/launch/albert_gazebo.launch" pass_all_args="true" />
+  </group>
+  <group unless="$(eval world == 'AH_store')">
+    <!-- Start up gazebo and bring up Albert -->
+    <include file="$(find albert_gazebo)/launch/albert_gazebo.launch" pass_all_args="true" />
+  </group>
+
+  <!-- Albert localization, mapping and navigation -->
+  <group if="$(eval localization == 'gmapping')">
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization">
+      <rosparam command="load" file="$(find boxer_control)/config/robot_localization.yaml" />
+    </node>
+    <include file="$(find albert_navigation)/launch/gmapping_demo.launch">
+        <arg name="rviz" value="$(arg rviz)"/>
+        <arg name="base_local_planner_yaml" default="$(arg base_local_planner_yaml)"/>
+    </include>
+  </group>
+
+  <group if="$(eval localization == 'amcl')">
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization">
+      <rosparam command="load" file="$(find boxer_control)/config/robot_localization.yaml" />
+    </node>
+    <include file="$(find albert_navigation)/launch/amcl_demo.launch">
+        <arg name="rviz" value="$(arg rviz)"/>
+        <arg name="map_file" value="$(find albert_navigation)/maps/$(arg world)/map.yaml"/>
+        <arg name="map_keepout_file" value="$(find albert_navigation)/maps/$(arg world)/map_keepout.yaml"/>
+        <arg name="base_local_planner_yaml" value="$(arg base_local_planner_yaml)"/>
+        <arg name="initial_pose_x" value="$(arg initial_pose_x)" />
+        <arg name="initial_pose_y" value="$(arg initial_pose_y)" />
+        <arg name="initial_pose_a" value="$(arg initial_pose_a)" />
+    </include>
+  </group>
+
+</launch>

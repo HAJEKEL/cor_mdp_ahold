@@ -1,5 +1,3 @@
-- git: {local-name: albert,                   uri: 'https://Docker:glpat-cSVs8ew7bDhK52PiVy6h@gitlab.tudelft.nl/airlab-delft/ng-staging/albert/albert.git', version: master}
-- git: {local-name: boxer,                    uri: 'https://Docker:glpat-wJTCb27hFVRyDoR-4QsK@gitlab.tudelft.nl/airlab-delft/ng-staging/internal_forks/clearpath/boxer/boxer.git', version: albert}
 - git: {local-name: franka_ros,               uri: 'https://github.com/tud-cor/franka_ros.git', version: extended_hw_sim}
 - git: {local-name: realsense_gazebo_plugin,  uri: 'https://github.com/pal-robotics/realsense_gazebo_plugin', version: melodic-devel}
 - git: {local-name: closest_link_attacher,  uri: 'https://github.com/c-salmi/closest_link_attacher.git', version: main}

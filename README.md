@@ -6,12 +6,7 @@ Common ROS packages for the Airlab Albert platform.
 
 Run the provided singularity image:
 ```bash
-# clone and cd inside this repository
-git clone git@gitlab.tudelft.nl:airlab-delft/ng-staging/albert/albert.git
-cd albert
-
-# build the docker image
-docker build -t albert .
+TODO
 ```
 
 ### Run the simulation

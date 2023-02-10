@@ -20,8 +20,7 @@ roslaunch albert_gazebo albert_gazebo_navigation.launch
 Clone repository and install dependencies using [vcstool](https://github.com/dirk-thomas/vcstool):
 ``` bash
 mkdir -p albert_ws/src && cd albert_ws/src
-git clone git@gitlab.tudelft.nl:airlab-delft/ng-staging/albert/albert.git
-
+git clone git@gitlab.tudelft.nl:cor/ro47014/2023_course_projects/group_00/retail_store_simulation.git 
 # If not installed yet
 sudo apt install python3-vcstool
 

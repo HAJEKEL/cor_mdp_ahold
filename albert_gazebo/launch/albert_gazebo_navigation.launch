@@ -10,7 +10,7 @@
   <!-- Robot Customization -->
   <arg name="arm_id" default="panda" doc="Name of the panda robot to spawn" />
   <arg name="boxer_control_mode" default="diff_drive"/>
-  <arg name="panda_control_mode" default="velocity" doc="Options: effort or moveit or example (cartesian_impedance_example_controller)"/>
+  <arg name="panda_control_mode" default="moveit" doc="Options: effort or moveit or example (cartesian_impedance_example_controller)"/>
   <arg name="joint_state_rate" default="500"/>
   <arg name="ee" default="vacuum"  doc="Which EE setup should be used? Choose between: gripper, gripper_camera, vacuum, none" />
 

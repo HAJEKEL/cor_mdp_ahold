@@ -24,7 +24,7 @@ git clone git@gitlab.tudelft.nl:cor/ro47014/2023_course_projects/group_00/retail
 # If not installed yet
 sudo apt install python3-vcstool
 
-vcs import --input retail_store_simulation/albert_{melodic, noetic}.rosinstall .
+vcs import --input retail_store_simulation/retail_store_simulation.rosinstall .
 ```
 
 Next, install all system dependencies that packages in `albert_ws` depend upon but are missing on your computer.

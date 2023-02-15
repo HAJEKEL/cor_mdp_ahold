@@ -88,117 +88,19 @@
 
   <model name="board0">
     <pose>0 0.5 2.1 0 0 0</pose>
-    
-    <include>
-      <uri>model://AH_thee_mango_tag36_11_00030</uri>
-      <pose>0.14285714285714285 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_thee_mango_tag36_11_00031</uri>
-      <pose>0.2857142857142857 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_thee_mango_tag36_11_00032</uri>
-      <pose>0.42857142857142855 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_thee_mango_tag36_11_00033</uri>
-      <pose>0.5714285714285714 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_thee_mango_tag36_11_00034</uri>
-      <pose>0.7142857142857142 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_thee_mango_tag36_11_00035</uri>
-      <pose>0.8571428571428571 0 0 0 0 1.57</pose>
-    </include>
-            
   </model>
     
   <model name="board1">
     <pose>0 0.5 1.6 0 0 0</pose>
-    
-    <include>
-      <uri>model://AH_hagelslag_melk_tag36_11_00000</uri>
-      <pose>0.14285714285714285 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_hagelslag_melk_tag36_11_00001</uri>
-      <pose>0.2857142857142857 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_hagelslag_melk_tag36_11_00002</uri>
-      <pose>0.42857142857142855 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_hagelslag_melk_tag36_11_00003</uri>
-      <pose>0.5714285714285714 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_hagelslag_melk_tag36_11_00004</uri>
-      <pose>0.7142857142857142 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_hagelslag_melk_tag36_11_00005</uri>
-      <pose>0.8571428571428571 0 0 0 0 1.57</pose>
-    </include>
-            
   </model>
     
   <model name="board2">
     <pose>0 0.5 1.2 0 0 0</pose>
-    
-    <include>
-      <uri>model://AH_hagelslag_puur_tag36_11_00015</uri>
-      <pose>0.1111111111111111 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_hagelslag_puur_tag36_11_00016</uri>
-      <pose>0.2222222222222222 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_hagelslag_puur_tag36_11_00017</uri>
-      <pose>0.3333333333333333 0 0 0 0 1.57</pose>
-    </include>
             
     <include>
       <uri>model://AH_hagelslag_puur_tag36_11_00018</uri>
       <pose>0.4444444444444444 0 0 0 0 1.57</pose>
     </include>
-            
-    <include>
-      <uri>model://AH_hagelslag_puur_tag36_11_00019</uri>
-      <pose>0.5555555555555556 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_hagelslag_puur_tag36_11_00020</uri>
-      <pose>0.6666666666666666 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_hagelslag_puur_tag36_11_00021</uri>
-      <pose>0.7777777777777777 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_hagelslag_puur_tag36_11_00022</uri>
-      <pose>0.8888888888888888 0 0 0 0 1.57</pose>
-    </include>
-            
   </model>
     
   <model name="board3">
@@ -208,112 +110,14 @@
       <uri>model://AH_thee_mango_tag36_11_00030</uri>
       <pose>0.14285714285714285 0 0 0 0 1.57</pose>
     </include>
-            
-    <include>
-      <uri>model://AH_thee_mango_tag36_11_00031</uri>
-      <pose>0.2857142857142857 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_thee_mango_tag36_11_00032</uri>
-      <pose>0.42857142857142855 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_thee_mango_tag36_11_00033</uri>
-      <pose>0.5714285714285714 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_thee_mango_tag36_11_00034</uri>
-      <pose>0.7142857142857142 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_thee_mango_tag36_11_00035</uri>
-      <pose>0.8571428571428571 0 0 0 0 1.57</pose>
-    </include>
-            
   </model>
     
   <model name="board4">
     <pose>0 0.5 0.65 0 0 0</pose>
-    
-    <include>
-      <uri>model://AH_hagelslag_melk_tag36_11_00000</uri>
-      <pose>0.1111111111111111 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_hagelslag_melk_tag36_11_00001</uri>
-      <pose>0.2222222222222222 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_hagelslag_melk_tag36_11_00002</uri>
-      <pose>0.3333333333333333 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_hagelslag_melk_tag36_11_00003</uri>
-      <pose>0.4444444444444444 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_hagelslag_melk_tag36_11_00004</uri>
-      <pose>0.5555555555555556 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_hagelslag_melk_tag36_11_00005</uri>
-      <pose>0.6666666666666666 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_hagelslag_melk_tag36_11_00006</uri>
-      <pose>0.7777777777777777 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_hagelslag_melk_tag36_11_00007</uri>
-      <pose>0.8888888888888888 0 0 0 0 1.57</pose>
-    </include>
-            
   </model>
     
   <model name="board5">
     <pose>0 0.5 0.25 0 0 0</pose>
-    
-    <include>
-      <uri>model://AH_thee_bosvruchten_tag36_11_00045</uri>
-      <pose>0.14285714285714285 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_thee_bosvruchten_tag36_11_00046</uri>
-      <pose>0.2857142857142857 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_thee_bosvruchten_tag36_11_00047</uri>
-      <pose>0.42857142857142855 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_thee_bosvruchten_tag36_11_00048</uri>
-      <pose>0.5714285714285714 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_thee_bosvruchten_tag36_11_00049</uri>
-      <pose>0.7142857142857142 0 0 0 0 1.57</pose>
-    </include>
-            
-    <include>
-      <uri>model://AH_thee_bosvruchten_tag36_11_00050</uri>
-      <pose>0.8571428571428571 0 0 0 0 1.57</pose>
-    </include>
-            
   </model>
     
   </model>

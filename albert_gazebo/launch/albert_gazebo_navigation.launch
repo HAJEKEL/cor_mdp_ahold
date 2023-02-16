@@ -22,27 +22,21 @@
   <arg name="initial_pose_a" default="3.14" />
 
   <!-- Check if using AH_store world, then set spawn configuration in front of shelf -->
-  <group if="$(eval world == 'AH_store')">
-    <arg name="initial_positions"
-         default="-J $(arg arm_id)_joint1 0
-                  -J $(arg arm_id)_joint2 -0.8
-                  -J $(arg arm_id)_joint3 0
-                  -J $(arg arm_id)_joint4 -2.4
-                  -J $(arg arm_id)_joint5 0
-                  -J $(arg arm_id)_joint6 3.14
-                  -J $(arg arm_id)_joint7 0.785398163397
-                  -J $(arg arm_id)_finger_joint1 0.001
-                  -J $(arg arm_id)_finger_joint2 0.001
-                  -x $(arg initial_pose_x)
-                  -y $(arg initial_pose_y)
-                  -z 0.03
-                  -Y $(arg initial_pose_a)" />
-    <include file="$(find albert_gazebo)/launch/albert_gazebo.launch" pass_all_args="true" />
-  </group>
-  <group unless="$(eval world == 'AH_store')">
-    <!-- Start up gazebo and bring up Albert -->
-    <include file="$(find albert_gazebo)/launch/albert_gazebo.launch" pass_all_args="true" />
-  </group>
+  <arg name="initial_positions"
+       default="-J $(arg arm_id)_joint1 0
+                -J $(arg arm_id)_joint2 -0.8
+                -J $(arg arm_id)_joint3 0
+                -J $(arg arm_id)_joint4 -2.4
+                -J $(arg arm_id)_joint5 0
+                -J $(arg arm_id)_joint6 3.14
+                -J $(arg arm_id)_joint7 0.785398163397
+                -J $(arg arm_id)_finger_joint1 0.001
+                -J $(arg arm_id)_finger_joint2 0.001
+                -x $(arg initial_pose_x)
+                -y $(arg initial_pose_y)
+                -z 0.03
+                -Y $(arg initial_pose_a)" />
+  <include file="$(find albert_gazebo)/launch/albert_gazebo.launch" pass_all_args="true" />
 
   <!-- Albert localization, mapping and navigation -->
   <group if="$(eval localization == 'gmapping')">

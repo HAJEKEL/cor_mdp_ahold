@@ -6,7 +6,14 @@ Common ROS packages for the Airlab Albert platform.
 
 Run the provided singularity image:
 ```bash
-TODO
+singularity shell -p /path/to/ro47014-23-2.sif
+```
+## Build workspace
+
+```bash
+cd ~/albert_ws
+catkin build
+source devel/setup.bash
 ```
 
 ### Run the simulation

@@ -17,7 +17,7 @@ git clone git@gitlab.tudelft.nl:cor/ro47007/2023/team-0/cor_mdp_ahold.git
 # If not installed yet
 sudo apt install python3-vcstool
 
-vcs import --input albert/albert.rosinstall .
+vcs import --input cor_mdp_ahold/retail_store_simulation.rosinstall .
 ```
 
 Next, we install all system dependencies that the packages in our workspace depend upon but are missing on your computer.
@@ -50,7 +50,7 @@ git clone git@gitlab.tudelft.nl:cor/ro47007/2023/team-0/cor_mdp_ahold.git
 # If not installed yet
 sudo apt install python3-vcstool
 
-vcs import --input albert/albert.rosinstall .
+vcs import --input cor_mdp_ahold/retail_store_simulation.rosinstall .
 ```
 
 Next we build and activate the docker environment.

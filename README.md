@@ -1,4 +1,4 @@
-# Retail Store Simulation (MPD 2023 version)
+# Retail Store Simulation (MDP 2023 version)
 
 Common ROS packages for the simulation of the Airlab Albert platform.
 
@@ -65,7 +65,7 @@ docker run -it -v <catkin_ws>:/catkin_ws -e DISPLAY=$DISPLAY --device /dev/dri:/
 
 Finally, we build the packages using catkin.
 ```bash
-cd .. && catkin build
+cd /catkin_ws && catkin build
 source devel/setup.bash
 ```
 

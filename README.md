@@ -60,7 +60,7 @@ docker build -t retail_store_simulation .
 # allow GUI's from docker by adding x server hosts
 xhost + local:docker
 
-docker run -it -v <catkin_ws>:/catkin_ws -e DISPLAY=$DISPLAY --device /dev/dri:/dev/dri --net host retail-store_simulation
+docker run -it -v <catkin_ws>:/catkin_ws -e DISPLAY=$DISPLAY --device /dev/dri:/dev/dri --net host retail_store_simulation
 ```
 
 Finally, we build the packages using catkin.

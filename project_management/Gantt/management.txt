@@ -1,0 +1,1 @@
+In this folder we are putting our Gantt project file.  The other group members can see the updated project when they git pull.

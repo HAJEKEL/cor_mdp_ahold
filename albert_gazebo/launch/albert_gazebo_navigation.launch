@@ -3,7 +3,7 @@
   <!-- Gazebo & GUI Configuration -->
   <arg name="gui"          default="true"  doc="Should the gazebo GUI be launched?" />
   <arg name="paused"       default="false" doc="Should the simulation directly be stopped at 0s?" />
-  <arg name="world"        default="krr_2023" doc="World name for gazebo to use (without .world extension), e.g. empty or AH_store. When an empty world is used, make sure to not use AMCL for localization as there is no pre-made map" />
+  <arg name="world"        default="AH_store" doc="World name for gazebo to use (without .world extension), e.g. empty or AH_store. When an empty world is used, make sure to not use AMCL for localization as there is no pre-made map" />
   <arg name="rviz"         default="true" doc="Should RViz be launched?" />
   <arg name="use_sim_time" default="true"/>
   <arg name="debug"        default="false"/>

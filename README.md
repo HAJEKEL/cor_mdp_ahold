@@ -76,3 +76,5 @@ To start the simulation environment:
 ```bash
 roslaunch albert_gazebo albert_gazebo_navigation.launch
 ```
+
+The default simulation world was changed to the `AH_store`

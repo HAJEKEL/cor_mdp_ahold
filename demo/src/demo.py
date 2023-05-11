@@ -12,6 +12,8 @@ from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from std_msgs.msg import String
 from moveit_commander.conversions import pose_to_list
 
+from move_group_python_interface import MoveGroupPythonInterface
+
 from math import pi, tau, dist, fabs, cos
 
 # Moving the robot base to a position in front of the shelf
@@ -39,19 +41,21 @@ class MoveBase(object):
         else:
             rospy.loginfo("Failed to reach goal for some reason")
 
+
+
 def get_quaternion_from_yaw(yaw):
     return geometry_msgs.msg.Quaternion(*tf_conversions.transformations.quaternion_from_euler(0, 0, yaw))
 
-def make_base_goal(x: float, y: float, yaw: float):
-    goal = MoveBaseGoal()
-    goal.target_pose.header.frame_id = "map"
-    goal.target_pose.header.stamp = rospy.Time.now()
+def make_base_goal_pose(x: float, y: float, yaw: float):
+    goal_pose = geometry_msgs.msg.Pose()
 
-    goal.target_pose.pose.position.x = x
-    goal.target_pose.pose.position.y = y
-    goal.target_pose.pose.orientation = get_quaternion_from_yaw(yaw)
+    goal_pose.position.x = x
+    goal_pose.position.y = y
+    goal_pose.orientation = get_quaternion_from_yaw(yaw)
 
-    return goal
+    return goal_pose
+
+
 
 
 
@@ -68,11 +72,11 @@ if __name__ == '__main__':
 
     # Move the robot to the first position
     rospy.loginfo("Moving to base station")
-    move_base.run(make_base_goal(4.0, 4.0, 0.0))
+    move_base.run(make_base_goal_pose(4.0, 4.0, 0.0))
 
     # Move the robot to the second position
     rospy.loginfo("Moving to shelf")
-    move_base.run(make_base_goal(-2.0, -0.5, 3.14))
+    move_base.run(make_base_goal_pose(-2.5, -0.5, 3.14))
 
 
 

@@ -1,0 +1,8 @@
+#goal definition
+int32 goal_id
+---
+#result definition
+bool success
+---
+#feedback
+

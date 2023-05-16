@@ -47,10 +47,17 @@ class PlanArmIK(object):
         print(robot.get_current_state())
         print("")
 
+        # Initialize vacuum gripper action client and related variable
         self._vacuum_client = actionlib.SimpleActionClient("/franka_vacuum_gripper/vacuum", VacuumAction)
         rospy.loginfo(f'Waiting for vacuum server')
         self._vacuum_client.wait_for_server()
         rospy.loginfo(f'Vacuum server found')
+
+        self._dropoff_client = actionlib.SimpleActionClient("/franka_vacuum_gripper/dropoff", DropOffAction)
+        rospy.loginfo(f"Waiting for dropoff server")
+        self._dropoff_client.wait_for_server()
+        rospy.loginfo(f"Dropoff server found")
+
 
         self._vis_pub = vis_pub
 
@@ -80,8 +87,8 @@ class PlanArmIK(object):
         self._vacuum_client.send_goal(goal)
 
     def deactivate_vacuum(self):
-        goal = VacuumGoal(vacuum=0)
-        self._vacuum_client.send_goal(goal)
+        goal = DropOffGoal()
+        self._dropoff_client.send_goal(goal)
 
 
     def run(self, pose_goal: Pose, frame_id: str = "panda_link0"):
@@ -118,13 +125,7 @@ class PlanArmIK(object):
         self.group.go(start_pos, wait=True)
         rospy.loginfo("Home position reached")
 
-    def vacuum(self, on: bool):
         rospy.loginfo("Vacuuming")
-        goal = VacuumGoal()
-        goal.on = on
-        self._vacuum_client.send_goal(goal)
-        self._vacuum_client.wait_for_result()
-        rospy.loginfo("Vacuuming done")
 
 
     def make_arm_goal_pose(self, ee_pose, vacuum_orientation=None, frame_id="panda_link0"):
@@ -149,7 +150,7 @@ class PlanArmIK(object):
                 goal_pose.orientation = geometry_msgs.msg.Quaternion(*tf_conversions.transformations.quaternion_from_euler(0,tau/4, 0))
             elif vacuum_orientation == "down":
                 # make the z axis point down
-                goal_pose.orientation = geometry_msgs.msg.Quaternion(*tf_conversions.transformations.quaternion_from_euler(0, 0, tau/4))
+                goal_pose.orientation = geometry_msgs.msg.Quaternion(*tf_conversions.transformations.quaternion_from_euler(0, 0, -tau/4))
 
         return goal_pose
     

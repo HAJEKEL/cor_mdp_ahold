@@ -1,0 +1,139 @@
+####################################################################################################
+#################### populating the store with tables and initial products #########################
+####################################################################################################
+
+insert
+# initialising date
+$today isa date, has current_date 2023-04-05;
+
+# adding waypoints for the table
+
+$wp0 isa waypoint, has name "wp0",
+    has lin_x 0, 
+    has lin_y 0,
+    has lin_z 0,
+    has rot_x 0,
+    has rot_y 0,
+    has rot_z 0;
+
+$wp_table0 isa waypoint, has name "wp_table0",
+    has lin_x 0, 
+    has lin_y 0,
+    has lin_z 0,
+    has rot_x 0,
+    has rot_y 0,
+    has rot_z 0;
+
+$wp_table1 isa waypoint, has name "wp_table1",
+    has lin_x 0.5, 
+    has lin_y 0,
+    has lin_z 0,
+    has rot_x 0,
+    has rot_y 0,
+    has rot_z 0;
+
+$wp_shelf0 isa waypoint, has name "wp_shelf0",
+    has lin_x 0.5, 
+    has lin_y 0.5,
+    has lin_z 0,
+    has rot_x 0,
+    has rot_y 0,
+    has rot_z 0;
+
+$wp_shelf1 isa waypoint, has name "wp_shelf1",
+    has lin_x 0, 
+    has lin_y 0.5,
+    has lin_z 0,
+    has rot_x 0,
+    has rot_y 0,
+    has rot_z 0;
+
+$wp_stock_table isa waypoint, has name "wp_stock_table",
+    has lin_x 0, 
+    has lin_y 1,
+    has lin_z 0,
+    has rot_x 0,
+    has rot_y 0,
+    has rot_z 0;
+
+$wp_discount_bin isa waypoint, has name "wp_discount_bin",
+    has lin_x 0.5, 
+    has lin_y 1,
+    has lin_z 0,
+    has rot_x 0,
+    has rot_y 0,
+    has rot_z 0;
+
+$wp_trash isa waypoint, has name "wp_trash",
+    has lin_x 0.5, 
+    has lin_y 1.5,
+    has lin_z 0,
+    has rot_x 0,
+    has rot_y 0,
+    has rot_z 0;
+
+
+
+# adding tables
+
+$table0 isa table, has name "table0", has id 0,
+    has max_capacity 4,
+    has current_capacity 0,
+    has lin_x 0.5, 
+    has lin_y 0.5,
+    has lin_z 0;
+(subject: $table0, waypoint: $wp_table0) isa has_waypoint;
+
+$table1 isa refrigerated_table, has name "table1", has id 1,
+    has max_capacity 5,
+    has current_capacity 0,
+    has lin_x 0.5, 
+    has lin_y 1.0,
+    has lin_z 0;
+(subject: $table1, waypoint: $wp_table1) isa has_waypoint;
+
+$shelf0 isa shelf, has name "shelf0", has id 2,
+    has max_capacity 6,
+    has current_capacity 0,
+    has lin_x 1.5, 
+    has lin_y 1.0,
+    has lin_z 0;
+(subject: $shelf0, waypoint: $wp_shelf0) isa has_waypoint;
+
+$shelf1 isa refrigerated_shelf, has name "shelf1", has id 3,
+    has max_capacity 3,
+    has current_capacity 0,
+    has lin_x 0.5, 
+    has lin_y 0.5,
+    has lin_z 0;
+(subject: $shelf1, waypoint: $wp_shelf1) isa has_waypoint;
+
+$stock_table isa table, has name "stock_table", has id 4,
+    has max_capacity 20,
+    has current_capacity 0,
+    has lin_x 0.5, 
+    has lin_y 0.5,
+    has lin_z 0;
+(subject: $stock_table, waypoint: $wp_stock_table) isa has_waypoint;
+
+# adding discount bin
+
+$discount_bin isa discount_bin, has name "discount_bin",
+    has max_capacity 10,
+    has current_capacity 0,
+    has lin_x 0.5, 
+    has lin_y 0.5,
+    has lin_z 0;
+(subject: $discount_bin, waypoint: $wp_discount_bin) isa has_waypoint;
+
+$trash isa trash, has name "trash",
+    has max_capacity 30,
+    has current_capacity 0,
+    has lin_x 0.5, 
+    has lin_y 0.5,
+    has lin_z 0;
+(subject: $trash, waypoint: $wp_trash) isa has_waypoint;
+
+
+
+

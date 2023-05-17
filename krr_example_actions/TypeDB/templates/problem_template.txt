@@ -1,0 +1,43 @@
+(define (problem {{problem_name}})
+    (:domain pick_place)
+    (:requirements :strips :typing)
+
+    (:objects   albert - robot
+                rightgrip - gripper
+                {% for product in products %}
+                {{product["name"]}} - object
+                {% endfor %}
+                no_priority - object
+                {% for wp in waypoints %}
+                {{wp}} - waypoint
+                {% endfor %}
+                {{start_wp}} - waypoint
+    )
+    
+    (:init
+        (robot-at albert {{start_wp}})
+        {% for product in products %}
+        (object-at {{product["name"]}} {{product["current_wp"]}})
+        {% endfor %}
+        {% for product in products %}
+        {% if loop.first %}
+        (highest-priority {{product["name"]}})
+        {% endif %}
+        {% if loop.nextitem %}
+        (priority-over {{product["name"]}} {{loop.nextitem["name"]}})
+        {% else %}
+        (priority-over {{product["name"]}} no_priority)
+        {% endif %}
+        {% endfor %}
+        (free rightgrip)
+    )
+    
+    (:goal (and
+        {% for product in products %}
+        (object-at {{product["name"]}} {{product["destination_wp"]}})
+        {% endfor %}
+        )
+    )
+
+)
+

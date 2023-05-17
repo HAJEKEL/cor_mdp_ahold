@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+
+	<node name="main_node" pkg="retail_store_skills" type="main_node" respawn="false" output="screen">
+	</node>
+
+</launch>

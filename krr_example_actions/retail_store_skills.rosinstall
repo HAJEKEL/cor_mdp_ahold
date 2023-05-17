@@ -1,0 +1,3 @@
+- git: {local-name: apriltag,  uri: 'https://github.com/AprilRobotics/apriltag', version: master}
+- git: {local-name: apriltag_ros,  uri: 'https://github.com/AprilRobotics/apriltag_ros', version: master}
+- git: {local-name: franka_ros,               uri: 'https://github.com/tud-cor/franka_ros.git', version: extended_hw_sim}

@@ -52,7 +52,7 @@ class CollisionBoxInterface(object):
         box_pose.header.frame_id = "panda_vacuum"
         box_pose.pose.orientation.w = 1.0
         box_pose.pose.position.z = 0.05  # above the panda_vacuum frame
-        self._scene.add_box(box_name, box_pose, size=(0.075, 0.075, 0.075))
+        self._scene.add_box(box_name, box_pose, size=(0.2, 0.2, 0.2))
 
         rospy.loginfo(f'Added product box to scene')
 

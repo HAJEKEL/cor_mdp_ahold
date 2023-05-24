@@ -32,7 +32,6 @@ class PickActionServer(object):
 
         # Collision box interface
         self._collision_box_interface = CollisionBoxInterface()
-        self._collision_box_interface.add_basket_box()
 
         # Initialize vacuum gripper action client and related variable
         self._vacuum_client = actionlib.SimpleActionClient("/franka_vacuum_gripper/vacuum", VacuumAction)
@@ -57,6 +56,8 @@ class PickActionServer(object):
             rospy.loginfo(f'Part already present, pick action aborted!')
             self._as.set_aborted()
             return
+        
+        self._collision_box_interface.add_basket_box()
 
         # Step 1: Joint goal start position
         rospy.loginfo('Pick action moving to start pos')
@@ -66,7 +67,7 @@ class PickActionServer(object):
 
         # Step 2: Position ee in front of requested pick tag
         pre_pose = PoseStamped()
-        pre_pose.pose.position.z = 0.10
+        pre_pose.pose.position.z = 0.20
         pre_pose.pose.orientation.x = 1
         pre_pose.pose.orientation.w = 0
         pre_pose.header.frame_id = "tag_{}".format(req.goal_id)
@@ -134,6 +135,8 @@ class PickActionServer(object):
             self._as.set_succeeded()
         else:
             self._as.set_aborted()
+
+        self._collision_box_interface.remove_box(box_name="basket_box")
 
         return
 

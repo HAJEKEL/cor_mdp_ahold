@@ -28,5 +28,7 @@ class PickClient(object):
 
 if __name__ == "__main__":
     rospy.init_node("test")
+    id = int(sys.argv[1])
+    rospy.loginfo("Pick up apriltag id: %d", id)
     client = PickClient()
-    client.run(18)
+    client.run(id)

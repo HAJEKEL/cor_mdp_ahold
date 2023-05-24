@@ -44,13 +44,18 @@ class FakeFrankaVacuumGripper(object):
         attach_req = AttachRequest()
         attach_req.model = "panda"
         attach_req.link = "panda_vacuum"
-        while not self.state.part_present:
+        # if request does not succeed in 2 seconds, abort
+        # record current time
+        start_time = rospy.Time.now()
+        while not self.state.part_present and (rospy.Time.now() - start_time).to_sec() < 2:
             try:
                 res = self._attach_srv.call(attach_req)
                 self.state.part_present = res.ok
+                self._vacuum_as.set_succeeded()
             except:
                 rospy.logwarn("attaching not succeeded")
-        self._vacuum_as.set_succeeded()
+                self._vacuum_as.set_aborted()
+        
 
     def dropoff_cb(self, msg):
         detach_req = DetachRequest()

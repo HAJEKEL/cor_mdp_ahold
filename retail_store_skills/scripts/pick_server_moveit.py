@@ -10,6 +10,7 @@ from copy import deepcopy
 from retail_store_skills.msg import *
 from geometry_msgs.msg import PoseStamped
 from franka_vacuum_gripper.msg import *
+from collision_box_interface import CollisionBoxInterface
 
 
 class PickActionServer(object):
@@ -29,6 +30,10 @@ class PickActionServer(object):
         self._group.set_max_velocity_scaling_factor(0.6) # Increase group velocity
         self._tl = tf.TransformListener()
 
+        # Collision box interface
+        self._collision_box_interface = CollisionBoxInterface()
+        self._collision_box_interface.add_basket_box()
+
         # Initialize vacuum gripper action client and related variable
         self._vacuum_client = actionlib.SimpleActionClient("/franka_vacuum_gripper/vacuum", VacuumAction)
         rospy.loginfo(f'Waiting for vacuum server')
@@ -43,6 +48,7 @@ class PickActionServer(object):
 
     def vacuum_state_cb(self, msg: VacuumState):
         self._vacuum_state = msg
+
 
     def as_cb(self, req):
         rospy.loginfo(f'Pick action called for Tag {req.goal_id}')
@@ -90,6 +96,11 @@ class PickActionServer(object):
         if not succeeded or self._as.is_preempt_requested():
             self._as.set_aborted()
             return
+
+        # Step 4: Add product collision box
+        self._collision_box_interface.add_product_box()
+        self._collision_box_interface.attach_box()
+
 
         # Step 5: Cartesian up and backwards
         goal = self._group.get_current_pose().pose

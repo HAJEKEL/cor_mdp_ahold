@@ -9,6 +9,7 @@ import moveit_commander
 from retail_store_skills.msg import *
 from franka_vacuum_gripper.msg import *
 from geometry_msgs.msg import PoseStamped
+from collision_box_interface import CollisionBoxInterface
 
 
 class PlaceActionServer(object):
@@ -29,6 +30,9 @@ class PlaceActionServer(object):
         self._robot = moveit_commander.RobotCommander()
         self._group.set_max_velocity_scaling_factor(0.6)  # Increase group velocity
         self._tl = tf.TransformListener()
+
+        # Collision box interface
+        self._collision_box_interface = CollisionBoxInterface()
 
         # Initialize vacuum gripper action client and related variable
         self._dropoff_client = actionlib.SimpleActionClient(
@@ -93,6 +97,10 @@ class PlaceActionServer(object):
             self._as.set_succeeded()
         else:
             self._as.set_aborted()
+
+        # Step 4: Remove product collision box
+        self._collision_box_interface.detach_box()
+        self._collision_box_interface.remove_box()
 
         return
 

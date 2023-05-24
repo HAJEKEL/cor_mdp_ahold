@@ -27,9 +27,6 @@ class PickClient(object):
 
 
 if __name__ == "__main__":
-    print(sys.argv)
-    
-    #args = rospy.myargv(argv=sys.argv)
     rospy.init_node("test")
     client = PickClient()
-    client.run(16)
+    client.run(18)

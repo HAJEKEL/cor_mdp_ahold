@@ -2,8 +2,10 @@
 
 import rospy
 import actionlib
+import sys
 from retail_store_skills.msg import PickAction
 from retail_store_skills.msg import PickGoal
+
 
 
 class PickClient(object):
@@ -25,6 +27,9 @@ class PickClient(object):
 
 
 if __name__ == "__main__":
+    print(sys.argv)
+    
+    #args = rospy.myargv(argv=sys.argv)
     rospy.init_node("test")
     client = PickClient()
-    client.run()
+    client.run(16)

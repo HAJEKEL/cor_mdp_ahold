@@ -117,6 +117,31 @@
     	<child link="top_mount_upper" />
     </joint>
 
+      <!-- MANDJE -->
+  <link name="top_mount_basket">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://albert_description/meshes/basket.dae"/>
+      </geometry>
+      <material name="Boxer_DarkGrey"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://albert_description/meshes/basket.dae"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="top_mount_joint_basket" type="fixed">
+    	<origin xyz="-0.20 0 0.13" rpy="0 0 0" />
+    	<parent link="top_mount_upper" />
+    	<child link="top_mount_basket" />
+    </joint>
+
+
+
 
 </xacro:macro>
 </robot>

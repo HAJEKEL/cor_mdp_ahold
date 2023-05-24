@@ -69,8 +69,8 @@ class PlaceActionServer(object):
         # Step 2: Cartesian goal to final drop position in map frame
         rospy.loginfo("Place action moving to final drop pos")
         pose = PoseStamped()
-        pose.header.frame_id = "map"
-        pose.pose = req.goal
+        pose.header.frame_id = req.goal.header.frame_id
+        pose.pose = req.goal.pose
 
         # check for reachability, and give warning
         test_pose = self._tl.transformPose("panda_link0", pose)

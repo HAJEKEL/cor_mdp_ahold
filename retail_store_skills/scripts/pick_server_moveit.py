@@ -60,7 +60,7 @@ class PickActionServer(object):
 
         # Step 2: Position ee in front of requested pick tag
         pre_pose = PoseStamped()
-        pre_pose.pose.position.z = 0.15
+        pre_pose.pose.position.z = 0.10
         pre_pose.pose.orientation.x = 1
         pre_pose.pose.orientation.w = 0
         pre_pose.header.frame_id = "tag_{}".format(req.goal_id)

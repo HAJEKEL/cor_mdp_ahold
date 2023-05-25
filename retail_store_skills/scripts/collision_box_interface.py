@@ -52,7 +52,7 @@ class CollisionBoxInterface(object):
         box_pose.header.frame_id = "panda_vacuum"
         box_pose.pose.orientation.w = 1.0
         box_pose.pose.position.z = 0.05  # above the panda_vacuum frame
-        self._scene.add_box(box_name, box_pose, size=(0.2, 0.2, 0.2))
+        self._scene.add_box(box_name, box_pose, size=(0.1, 0.1, 0.1))
 
         rospy.loginfo(f'Added product box to scene')
 
@@ -71,6 +71,54 @@ class CollisionBoxInterface(object):
         self._scene.add_box(box_name, box_pose, size=(0.3, 0.5, 0.3))
         rospy.loginfo(f'Added basket box to scene')
         return self.wait_for_state_update(box_is_known=True, timeout=timeout, box_name=box_name)
+
+    def add_shelf_collision_boxes(self, tag_id: int, timeout=4):
+        box_size = 0.5
+        horizontal_offset = 0.2 + box_size/2
+        vertical_offset = 0.3 + box_size/2
+
+        frame_id = "tag_{}".format(tag_id)
+        box_orientation = Quaternion(*quaternion_from_euler(0, 0, 0))
+
+        left_box_pose = PoseStamped()
+        left_box_pose.header.frame_id = frame_id
+        left_box_pose.pose.position.x = -horizontal_offset
+        left_box_pose.pose.orientation = box_orientation
+        self._scene.add_box("shelf_left", left_box_pose, size=(box_size, box_size, 0.2))
+        self.wait_for_state_update(box_is_known=True, box_name="shelf_left")
+
+        right_box_pose = PoseStamped()
+        right_box_pose.header.frame_id = frame_id
+        right_box_pose.pose.position.x = horizontal_offset
+        right_box_pose.pose.orientation = box_orientation
+        self._scene.add_box("shelf_right", right_box_pose, size=(box_size, box_size, 0.2))
+        self.wait_for_state_update(box_is_known=True, box_name="shelf_right")
+
+        top_box_pose = PoseStamped()
+        top_box_pose.header.frame_id = frame_id
+        top_box_pose.pose.position.y = vertical_offset
+        top_box_pose.pose.orientation = box_orientation
+        self._scene.add_box("shelf_top", top_box_pose, size=(box_size, box_size, 0.2))
+        self.wait_for_state_update(box_is_known=True, box_name="shelf_top")
+
+        bottom_box_pose = PoseStamped()
+        bottom_box_pose.header.frame_id = frame_id
+        bottom_box_pose.pose.position.y = -vertical_offset
+        bottom_box_pose.pose.orientation = box_orientation
+        self._scene.add_box("shelf_bottom", bottom_box_pose, size=(box_size, box_size, 0.2))
+        self.wait_for_state_update(box_is_known=True, box_name="shelf_bottom")
+
+
+
+    def remove_shelf_collision_boxes(self, timeout=4):
+        self._scene.remove_world_object("shelf_left")
+        assert self.wait_for_state_update(box_is_attached=False, box_is_known=False, box_name="shelf_left")
+        self._scene.remove_world_object("shelf_right")
+        assert self.wait_for_state_update(box_is_attached=False, box_is_known=False, box_name="shelf_right")
+        self._scene.remove_world_object("shelf_top")
+        assert self.wait_for_state_update(box_is_attached=False, box_is_known=False, box_name="shelf_top")
+        self._scene.remove_world_object("shelf_bottom")
+        assert self.wait_for_state_update(box_is_attached=False, box_is_known=False, box_name="shelf_bottom")
 
 
     def attach_box(self, timeout=4, box_name="product_box", touch_links=["panda_vacuum"]):

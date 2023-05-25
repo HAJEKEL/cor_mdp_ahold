@@ -69,7 +69,7 @@ class CollisionBoxInterface(object):
         box_pose.pose.position.y = 0.0
         box_pose.pose.position.z = 0.15
 
-        self._scene.add_box(box_name, box_pose, size=(0.3, 0.6, 0.5))
+        self._scene.add_box(box_name, box_pose, size=(0.3, 0.6, 0.55))
         rospy.loginfo(f'Added basket box to scene')
         return self.wait_for_state_update(box_is_known=True, timeout=timeout, box_name=box_name)
 

@@ -16,7 +16,8 @@ from collision_box_interface import CollisionBoxInterface
 class PickActionServer(object):
     def __init__(self, name: str, pick_distance: float = 0.2) -> None:
         # Read config
-        self.simulation = True #rospy.get_param("simulation")
+        self.simulation = True 
+        #rospy.get_param("simulation")
 
         # Initialize action server
         self._rate = rospy.Rate(20)

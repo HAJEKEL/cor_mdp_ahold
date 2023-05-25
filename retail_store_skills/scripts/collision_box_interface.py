@@ -51,8 +51,9 @@ class CollisionBoxInterface(object):
         box_pose = geometry_msgs.msg.PoseStamped()
         box_pose.header.frame_id = "panda_vacuum"
         box_pose.pose.orientation.w = 1.0
-        box_pose.pose.position.z = 0.05  # above the panda_vacuum frame
-        self._scene.add_box(box_name, box_pose, size=(0.1, 0.1, 0.1))
+        box_pose.pose.position.z = 0.5  # above the panda_vacuum frame
+        self._scene.add_box(box_name, box_pose, size=(0.75, 0.75, 0.75))
+
 
         rospy.loginfo(f'Added product box to scene')
 
@@ -68,7 +69,7 @@ class CollisionBoxInterface(object):
         box_pose.pose.position.y = 0.0
         box_pose.pose.position.z = 0.15
 
-        self._scene.add_box(box_name, box_pose, size=(0.3, 0.5, 0.3))
+        self._scene.add_box(box_name, box_pose, size=(0.3, 0.6, 0.5))
         rospy.loginfo(f'Added basket box to scene')
         return self.wait_for_state_update(box_is_known=True, timeout=timeout, box_name=box_name)
 
@@ -151,10 +152,24 @@ class CollisionBoxInterface(object):
         self._scene.remove_world_object(box_name)
 
         ## **Note:** The object must be detached before we can remove it from the world
-        rospy.loginfo(f'Removed product box from scene')
+        rospy.loginfo(f'Removed {box_name} from scene')
 
         # We wait for the planning scene to update.
         return self.wait_for_state_update(
             box_is_attached=False, box_is_known=False, timeout=timeout, box_name=box_name
         )
+
+    def remove_all(self, timeout=4):
+        # get the names of all the objects in the scene
+        object_names = self._scene.get_known_object_names()
+        # remove all objects from the scene
+        for object_name in object_names:
+            self._scene.remove_world_object(object_name)
+        rospy.loginfo(f'Removed all objects from scene')
+
+        # We wait for the planning scene to update.
+        return self.wait_for_state_update(
+            box_is_attached=False, box_is_known=False, timeout=timeout
+        )
+
 

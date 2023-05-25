@@ -60,6 +60,9 @@ class PlaceActionServer(object):
            return
 
         self._collision_box_interface.add_basket_box()
+        # self._collision_box_interface.add_product_box()
+        # self._collision_box_interface.attach_box(box_name="product_box")
+
 
         
         # Step 1: Joint goal start position
@@ -69,6 +72,8 @@ class PlaceActionServer(object):
         rospy.loginfo("Place action finished moving to start pos")
 
         if not succeeded:
+            # self._collision_box_interface.detach_box(box_name="product_box")
+            # self._collision_box_interface.remove_box(box_name="product_box")
             self._as.set_aborted()
             return
 
@@ -94,6 +99,8 @@ class PlaceActionServer(object):
                 rospy.logwarn(f"Planning failed, trying again...")
 
         if not succeeded:
+            self._collision_box_interface.detach_box(box_name="product_box")
+            self._collision_box_interface.remove_box(box_name="product_box")
             self._as.set_aborted()
             return
 
@@ -105,12 +112,12 @@ class PlaceActionServer(object):
         if succeeded:
             self._as.set_succeeded()
         else:
+            self._collision_box_interface.detach_box(box_name="product_box")
+            self._collision_box_interface.remove_box(box_name="product_box")
             self._as.set_aborted()
 
         # Step 4: Remove product collision boxes
         self._collision_box_interface.detach_box(box_name="product_box")
-        self._collision_box_interface.remove_box(box_name="product_box")
-        self._collision_box_interface.remove_box(box_name="basket_box")
         
 
         return

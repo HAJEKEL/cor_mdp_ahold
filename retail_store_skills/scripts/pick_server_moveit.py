@@ -14,7 +14,7 @@ from collision_box_interface import CollisionBoxInterface
 
 
 class PickActionServer(object):
-    def __init__(self, name: str) -> None:
+    def __init__(self, name: str, pick_distance: float = 0.2) -> None:
         # Read config
         self.simulation = True #rospy.get_param("simulation")
 
@@ -22,6 +22,8 @@ class PickActionServer(object):
         self._rate = rospy.Rate(20)
         self._action_name = name
         self._as = actionlib.SimpleActionServer(self._action_name, PickAction, execute_cb=self.as_cb, auto_start=False)
+
+        self.pick_distance = pick_distance
 
         # Moveit interfaces
         self._scene = moveit_commander.PlanningSceneInterface()
@@ -57,7 +59,9 @@ class PickActionServer(object):
             self._as.set_aborted()
             return
         
+        # Step 0: Add collision boxes
         self._collision_box_interface.add_basket_box()
+        #self._collision_box_interface.add_shelf_collision_boxes(req.goal_id)
 
         # Step 1: Joint goal start position
         rospy.loginfo('Pick action moving to start pos')
@@ -67,7 +71,7 @@ class PickActionServer(object):
 
         # Step 2: Position ee in front of requested pick tag
         pre_pose = PoseStamped()
-        pre_pose.pose.position.z = 0.20
+        pre_pose.pose.position.z = self.pick_distance
         pre_pose.pose.orientation.x = 1
         pre_pose.pose.orientation.w = 0
         pre_pose.header.frame_id = "tag_{}".format(req.goal_id)
@@ -81,7 +85,7 @@ class PickActionServer(object):
 
         # Step 3: Cartesian forward
         goal = pre_pose
-        goal.pose.position.z -= 0.15
+        goal.pose.position.z -= self.pick_distance
         goal_map_frame = self._tl.transformPose("map", goal) # Because compute_cartesian_path assumes poses in planning_frame(=map)
         (plan, _) = self._group.compute_cartesian_path([goal_map_frame.pose], 0.01, 0.0)
         succeeded = self._group.execute(plan, wait=True)
@@ -137,6 +141,7 @@ class PickActionServer(object):
             self._as.set_aborted()
 
         self._collision_box_interface.remove_box(box_name="basket_box")
+        #self._collision_box_interface.remove_shelf_collision_boxes(box_name="product_box")
 
         return
 

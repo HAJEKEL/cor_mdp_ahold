@@ -12,6 +12,9 @@
   <arg name="scan_shelf_namespace" default="scan_shelf_server" />
   <node pkg="retail_store_skills" name="$(arg scan_shelf_namespace)" type="scan_shelf_server.py" output="screen" />
 
+  <arg name="present_namespace" default="present_server" />
+  <node pkg="retail_store_skills" name="$(arg present_namespace)" type="present_server_moveit.py" output="screen" />
+
   <node pkg="retail_store_skills" name="franka_vacuum_gripper" type="mock_vacuum_server.py" output="screen" />
 
   <include file="$(find retail_store_skills)/launch/apriltag_detection.launch"/>

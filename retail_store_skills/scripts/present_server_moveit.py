@@ -73,36 +73,24 @@ class PresentActionServer(object):
             return
 
         # Step 2: move joints to present position
-        present_pos = [-3.14, -0.8, 0.0, -2.3, 0.0, 1.6, 0.8]
+        present_pos = [-1.57, -0.8, 0.0, -2.3, 0.0, 2.7, 0.8]
         succeeded = self._group.go(present_pos, wait=True)
 
-        # Step 2: Cartesian goal to final present position in map frame
-        rospy.loginfo("Present action moving to final present pos")
-        pose = PoseStamped()
-        pose.header.frame_id = req.goal.header.frame_id
-        pose.pose = req.goal.pose
-
-        # check for reachability, and give warning
-        test_pose = self._tl.transformPose("panda_link0", pose)
-        test_dist = np.linalg.norm(np.array([test_pose.pose.position.x, test_pose.pose.position.y, test_pose.pose.position.z]))
-        if test_dist > 0.8:
-            rospy.logwarn(f"The specified Present goal is {test_dist:.2f} meters away from the base of the arm, and thus likely out of reach!")
-
-        self._group.set_pose_target(pose)
-        succeeded = self._group.go(wait=True)
         if not succeeded:
             self._as.set_aborted()
             return
 
-        # Step 3: Dropoff
+        # Step 3: wait until part not present in gripper
+        while self._vacuum_state.part_present:
+            rospy.loginfo("Part present, waiting...")
+            self._rate.sleep()
+       
+       # Step 4: if part not present, initialise dropoff
         rospy.loginfo(f"Dropping it off")
         goal = DropOffGoal(timeout=10)
         self._dropoff_client.send_goal(goal)
 
-        if succeeded:
-            self._as.set_succeeded()
-        else:
-            self._as.set_aborted()
+        rospy.loginfo(f"Part has been picked by customer")
 
         return
 

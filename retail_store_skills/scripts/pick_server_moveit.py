@@ -86,7 +86,7 @@ class PickActionServer(object):
 
         # Step 3: Cartesian forward
         goal = pre_pose
-        goal.pose.position.z -= self.pick_distance
+        goal.pose.position.z -= (self.pick_distance + 0.02)
         goal_map_frame = self._tl.transformPose("map", goal) # Because compute_cartesian_path assumes poses in planning_frame(=map)
         (plan, _) = self._group.compute_cartesian_path([goal_map_frame.pose], 0.01, 0.0)
         succeeded = self._group.execute(plan, wait=True)

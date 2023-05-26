@@ -90,6 +90,11 @@ class PresentActionServer(object):
         goal = DropOffGoal(timeout=10)
         self._dropoff_client.send_goal(goal)
 
+        # Step 5: return to home position
+        succeeded = self._group.go(start_pos, wait=True)
+        
+
+
         rospy.loginfo(f"Part has been picked by customer")
 
         return

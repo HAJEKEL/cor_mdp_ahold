@@ -12,7 +12,7 @@ For this option it's required to have ubuntu 20.04, ROS noetic and moveit instal
 We use vcstool to clone git repositories of dependencies that should be built from source:
 ``` bash
 # Inside your catkin workspace
-git clone git@gitlab.tudelft.nl:cor/ro47007/2023/team-0/cor_mdp_ahold.git
+git clone git@gitlab.tudelft.nl:cor/ro47007/2023/team-20/cor_mdp_ahold.git
 
 # If not installed yet
 sudo apt install python3-vcstool

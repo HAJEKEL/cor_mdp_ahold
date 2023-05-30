@@ -1,0 +1,9 @@
+#goal definition
+string customer_name
+---
+#result definition
+string wanted_product
+bool picking_assistance
+---
+#feedback
+

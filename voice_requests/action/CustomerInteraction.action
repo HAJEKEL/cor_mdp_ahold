@@ -2,6 +2,7 @@
 string customer_name
 ---
 #result definition
+bool success
 string wanted_product
 bool picking_assistance
 ---

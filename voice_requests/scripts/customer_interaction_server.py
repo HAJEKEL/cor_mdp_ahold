@@ -75,21 +75,24 @@ class CustomerInteractionServer(object):
         # Start the interaction
         i = 0
         request_done = False
+
         while i < self._max_turns and not request_done:
             prompt = self.user_response()
 
             try:
                 response = chatbot.get_response(prompt)
             except:
-                speak("Sorry, I couldnt respond to that")
+                speak("Sorry, Please repeat that")
                 continue
+
 
             speak(response.response)
             i += 1
 
-            if response.request_done:
+            if response.request_done and response.wanted_product is not None and response.picking_assistance is not None:
                 request_done = True
                 # set the result
+                self._result.success = True
                 self._result.wanted_product = response.wanted_product
                 self._result.picking_assistance = response.picking_assistance
                 rospy.loginfo(f"Customer wants the product: {self._result.wanted_product} and requires assistance: {self._result.picking_assistance}")

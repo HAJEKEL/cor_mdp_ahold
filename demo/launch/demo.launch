@@ -1,0 +1,8 @@
+<launch>
+    <group ns="demo_params">
+        <rosparam file="$(find demo)/config/base_locations.yaml" />
+        <rosparam file="$(find demo)/config/arm_locations.yaml" />
+    </group>
+    <node pkg="demo" name="franka_vacuum_gripper" type="mock_vacuum_server.py" output="screen" />
+    <node pkg="demo" name="demo" type="demo.py" output="screen" />
+</launch>

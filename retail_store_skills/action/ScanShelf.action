@@ -1,0 +1,7 @@
+#goal definition
+float64 shelf_direction
+---
+#result definition
+bool success
+---
+#feedback

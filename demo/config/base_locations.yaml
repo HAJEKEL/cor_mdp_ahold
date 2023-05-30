@@ -1,0 +1,16 @@
+waypoints:
+  shelf_1:
+    position:
+      x: -2.5
+      y: -0.5
+      z: 0.0
+    yaw:
+      a: 3.14
+  base_station:
+    position:
+      x: 2.0
+      y: 2.0
+      z: 0.0
+    yaw:
+      a: 0.0
+

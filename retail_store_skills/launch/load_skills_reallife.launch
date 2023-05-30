@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <arg name="pick_namespace" default="pick_server" />
+  <node pkg="retail_store_skills" name="$(arg pick_namespace)" type="pick_server_moveit.py" output="screen" />
+
+  <arg name="place_namespace" default="place_server" />
+  <node pkg="retail_store_skills" name="$(arg place_namespace)" type="place_server_moveit.py" output="screen" />
+
+  <arg name="look_for_item_namespace" default="look_for_item_server" />
+  <node pkg="retail_store_skills" name="$(arg look_for_item_namespace)" type="look_for_item_server_moveit.py" output="screen" />
+
+  <arg name="scan_shelf_namespace" default="scan_shelf_server" />
+  <node pkg="retail_store_skills" name="$(arg scan_shelf_namespace)" type="scan_shelf_server.py" output="screen" />
+
+  <arg name="present_namespace" default="present_server" />
+  <node pkg="retail_store_skills" name="$(arg present_namespace)" type="present_server_moveit.py" output="screen" />
+
+  <!--<node pkg="retail_store_skills" name="franka_vacuum_gripper" type="mock_vacuum_server.py" output="screen" />
+
+  <include file="$(find retail_store_skills)/launch/apriltag_detection.launch"/>-->
+</launch>

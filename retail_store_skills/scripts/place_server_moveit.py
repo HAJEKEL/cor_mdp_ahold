@@ -9,6 +9,7 @@ import moveit_commander
 from retail_store_skills.msg import *
 from franka_vacuum_gripper.msg import *
 from geometry_msgs.msg import PoseStamped
+from collision_box_interface import CollisionBoxInterface
 
 
 class PlaceActionServer(object):
@@ -29,6 +30,9 @@ class PlaceActionServer(object):
         self._robot = moveit_commander.RobotCommander()
         self._group.set_max_velocity_scaling_factor(0.6)  # Increase group velocity
         self._tl = tf.TransformListener()
+
+        # Collision box interface
+        self._collision_box_interface = CollisionBoxInterface()
 
         # Initialize vacuum gripper action client and related variable
         self._dropoff_client = actionlib.SimpleActionClient(
@@ -55,6 +59,11 @@ class PlaceActionServer(object):
            self._as.set_aborted()
            return
 
+        self._collision_box_interface.add_basket_box()
+        # self._collision_box_interface.add_product_box()
+        # self._collision_box_interface.attach_box(box_name="product_box")
+
+
         
         # Step 1: Joint goal start position
         rospy.loginfo("Place action moving to start pos")
@@ -63,14 +72,16 @@ class PlaceActionServer(object):
         rospy.loginfo("Place action finished moving to start pos")
 
         if not succeeded:
+            # self._collision_box_interface.detach_box(box_name="product_box")
+            # self._collision_box_interface.remove_box(box_name="product_box")
             self._as.set_aborted()
             return
 
         # Step 2: Cartesian goal to final drop position in map frame
         rospy.loginfo("Place action moving to final drop pos")
         pose = PoseStamped()
-        pose.header.frame_id = "map"
-        pose.pose = req.goal
+        pose.header.frame_id = req.goal.header.frame_id
+        pose.pose = req.goal.pose
 
         # check for reachability, and give warning
         test_pose = self._tl.transformPose("panda_link0", pose)
@@ -78,9 +89,18 @@ class PlaceActionServer(object):
         if test_dist > 0.8:
             rospy.logwarn(f"The specified place goal is {test_dist:.2f} meters away from the base of the arm, and thus likely out of reach!")
 
-        self._group.set_pose_target(pose)
-        succeeded = self._group.go(wait=True)
+        # sometimes the planning fails, so we try a few times
+        for i in range(3):
+            self._group.set_pose_target(pose)
+            succeeded = self._group.go(wait=True)
+            if succeeded:
+                break
+            else:
+                rospy.logwarn(f"Planning failed, trying again...")
+
         if not succeeded:
+            self._collision_box_interface.detach_box(box_name="product_box")
+            self._collision_box_interface.remove_box(box_name="product_box")
             self._as.set_aborted()
             return
 
@@ -92,7 +112,13 @@ class PlaceActionServer(object):
         if succeeded:
             self._as.set_succeeded()
         else:
+            self._collision_box_interface.detach_box(box_name="product_box")
+            self._collision_box_interface.remove_box(box_name="product_box")
             self._as.set_aborted()
+
+        # Step 4: Remove product collision boxes
+        self._collision_box_interface.detach_box(box_name="product_box")
+        
 
         return
 

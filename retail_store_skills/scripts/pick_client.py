@@ -2,8 +2,10 @@
 
 import rospy
 import actionlib
+import sys
 from retail_store_skills.msg import PickAction
 from retail_store_skills.msg import PickGoal
+
 
 
 class PickClient(object):
@@ -20,11 +22,16 @@ class PickClient(object):
         rospy.loginfo("Sending picking goal...")
         self.client.send_goal(goal)
         self.client.wait_for_result()
-
-        rospy.loginfo("Picking finished")
+        # if success, print picking finished
+        if self.client.get_state() == actionlib.GoalStatus.SUCCEEDED:
+            rospy.loginfo("Picking finished")
+        else:
+            rospy.loginfo("Picking failed")
 
 
 if __name__ == "__main__":
     rospy.init_node("test")
+    id = int(sys.argv[1])
+    rospy.loginfo("Pick up apriltag id: %d", id)
     client = PickClient()
-    client.run()
+    client.run(id)

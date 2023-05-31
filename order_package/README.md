@@ -16,6 +16,11 @@ To use the order package, you need to have a working ROS environment. Follow the
 
 Next, clone this repository into your catkin workspace and build the package using the following commands:
 
+You will also need pandas for this package.
+```
+pip install pandas
+```
+
 bash
 ```
 cd <path_to_your_catkin_workspace>/src

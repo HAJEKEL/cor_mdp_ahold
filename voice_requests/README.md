@@ -1,15 +1,23 @@
 # Speech recognition + chatGPT package
 
-the package uses the microphone of the laptop to recognise voice.
+This package implements voice control functionality for the Albert robot to interact with customers in the retail store.
 
-To use on ubuntu, install the following dependcies"
+
+## Dependencies
+
+To use on ubuntu, install the following dependencies:
 ```bash
 sudo apt-get install libasound-dev portaudio19-dev libportaudio2 libportaudiocpp0
 ```
-
-We also need to instaal the google test to speech plugin
+Then install the pyaudio package:
 ```bash
-pip install gTTs
+pip install pyaudio
 ```
+
+We also need to install the google test to speech plugin, as well ass the speech recognition package:
+```
+pip install gTTs SpeechRecognition
+```
+
  
 

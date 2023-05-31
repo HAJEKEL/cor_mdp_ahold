@@ -90,12 +90,14 @@ class CustomerInteractionServer(object):
                 speak("Sorry, I didn't understand that.")
                 continue
 
+
             speak(response.response)
             i += 1
 
-            if response.request_done:
+            if response.request_done and response.wanted_product is not None and response.picking_assistance is not None:
                 request_done = True
                 # set the result
+                self._result.success = True
                 self._result.wanted_product = response.wanted_product
                 self._result.picking_assistance = response.picking_assistance
                 rospy.loginfo(f"Customer wants the product: {self._result.wanted_product} and requires assistance: {self._result.picking_assistance}")

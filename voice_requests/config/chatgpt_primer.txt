@@ -23,6 +23,7 @@ The request is not done. Ask the customer if they require picking assistance
 
 
 # Situation 4: The exact product is in the list and the customer has specified if they need picking assistance
-The request is done. Tell the customer to follow you to the product.
+The request is done. Always tell the customer to follow you to the product.
+
 
 

@@ -1,0 +1,6 @@
+product_name,store_location,min_tag_id,max_tag_id
+milk,shelf_1,0,20
+peach_tea,shelf_2,21,40
+mint_tea,shelf_2,41,50
+chocolate_sprinkles,shelf_3,51,70
+cereal,shelf_4,71,80

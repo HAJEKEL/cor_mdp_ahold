@@ -31,28 +31,36 @@ class ChatGPTAssistant:
         self.model = model
         self.messages = []
         self.template = template
-        available_products = "milk, peach tea, mint tea, chocolate" # change this to a query to the parameter server for products later
+        available_products = "yoghurt, milk, peach tea, mint tea, chocolate sprinkles, chocolate cereal, cereal" # change this to a query to the parameter server for products later
         self.messages.append({"role": "user", "content": self.template.format(available_products)})
-        
 
-    def get_response(self, prompt=None) -> ClientResponse:
+
+    def get_response(self, prompt=None, n_tries: int = 3) -> ClientResponse:
         if prompt is not None:
             self.messages.append({"role": "user", "content": prompt})
-        res = openai.ChatCompletion.create(
-            model=self.model,
-            messages=self.messages,
-            temperature=0,
-            )
-        if prompt is None:
-            return res.choices[0].message["content"]
-        
-        try:
-            response = ClientResponse(res.choices[0].message["content"])
-            self.messages.append(res.choices[0].message)
-        except ValueError:
-            return "Let me try to answer that again"
 
-        return response
+        for _ in range(n_tries):
+            res = openai.ChatCompletion.create(
+                model=self.model,
+                messages=self.messages,
+                temperature=0
+            )
+
+            if prompt is None:
+                return res.choices[0].message["content"]
+
+            try:
+                response = ClientResponse(res.choices[0].message["content"])
+                self.messages.append(res.choices[0].message)
+                return response
+            except ValueError:
+                rospy.logerr(f"Response attempt {_ + 1} does not have the correct format")
+
+        # If we get here, the response does not have the correct format
+        raise ValueError("Response does not have the correct format")
+
+
+
     
 
 

@@ -1,0 +1,13 @@
+store_locations:
+  shelf_0:
+    waypoint: wp0
+  shelf_1:
+    waypoint: wp1
+  shelf_2:
+    waypoint: wp2
+  shelf_3:
+    waypoint: wp3
+  shelf_4:
+    waypoint: wp4
+  base_station:
+    waypoint: wp5

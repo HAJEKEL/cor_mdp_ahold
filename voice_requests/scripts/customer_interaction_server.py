@@ -75,13 +75,19 @@ class CustomerInteractionServer(object):
         # Start the interaction
         i = 0
         request_done = False
+        n_fails = 0
         while i < self._max_turns and not request_done:
             prompt = self.user_response()
 
             try:
                 response = chatbot.get_response(prompt)
             except:
-                speak("Sorry, I couldnt respond to that")
+                n_fails += 1
+                if n_fails > 2:
+                    speak("Lets try this again")
+                    self._as.set_aborted()
+                    return
+                speak("Sorry, I didn't understand that.")
                 continue
 
             speak(response.response)

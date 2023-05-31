@@ -7,6 +7,7 @@ from voice_requests.msg import CustomerInteractionAction, CustomerInteractionGoa
 
 
 
+
 class CustomerInteractionClient(object):
     def __init__(self):
         # Launch Client and wait for server

@@ -113,58 +113,20 @@ class CustomerInteractionServer(object):
         self._as.set_aborted()
         return
         
+
+
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Customer interaction server')
-    parser.add_argument('--template', type=Path, default=Path(__file__).parent.parent / "config" / "chatgpt_primer.txt", help='Path to template file')
+
+    # if available, get the path to the template file from the parameter server
+    if rospy.has_param("/gpt_primer_path"):
+        template = Path(rospy.get_param("/gpt_primer_path"))
+    else:
+        template = Path(__file__).parent.parent / "config" / "chatgpt_primer.txt"
+
+
 
     rospy.init_node('customer_interaction_server')
-    CustomerInteractionServer(rospy.get_name(), parser.parse_args().template, max_turns=10)
+    CustomerInteractionServer(rospy.get_name(), template, max_turns=10)
     rospy.spin()
 
 
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-def customer_interaction(max_turns=10):
-    chatbot = ChatGPTAssistant()
-    i = 0
-    response = chatbot.get_response()
-    print("Chatbot: " + response)
-    speak(response)
-
-    while i < max_turns:
-        prompt = user_response()
-        try:
-            res = chatbot.get_response(prompt)
-        except:
-            speak("Sorry, I didn't understand that.")
-            continue
-        try:
-            response = ClientResponse(res)
-        except ValueError:
-            speak("Sorry, I didn't understand that.")
-            continue
-
-
-        speak(response.response)
-        if response.request_done == "True":
-            break
-        i += 1
-
-
-
-def speak(text):
-    tts = gTTS(text=text, lang='en-uk')
-    tts.save("voice.mp3")
-    os.system("mpg321 voice.mp3")

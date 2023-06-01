@@ -15,6 +15,7 @@ Welcome to the Supermarket Order Picking Robot project! This repository contains
 - Intuitive Interface: We've designed a user-friendly local-based interface for creating customer orders.
 - Collaborative Planning: The software leverages advanced algorithms for task allocation, path planning, and collision avoidance to optimize the overall order picking process and ensure smooth robot operation.
 - Integration with Supermarket Systems: Our solution integrates with existing supermarket systems, such as inventory management and point-of-sale, ensuring seamless order processing and synchronization.
+- Fully implemented FlexBE behavior engine allowing complex behavior for the robot. 
 
 
 ## Installation
@@ -27,18 +28,27 @@ For this option it's required to have ubuntu 20.04, ROS noetic and moveit instal
 First, we create a fresh catkin workspace. This tutorial assumes that you have installed catkin. 
 ```bash
 #source your environment:
-$ source /opt/ros/noetic/setup.bash
+ source /opt/ros/noetic/setup.bash
 
 #create and build a catkin workspace:
-$ mkdir -p ~/catkin_ws/src
-$ cd ~/catkin_ws/
-$ catkin build
+ mkdir -p ~/catkin_ws/src
+ cd ~/catkin_ws/
+ cd src
 ```
 
 We use vcstool to clone git repositories of dependencies that should be built from source:
 ``` bash
 # Inside your catkin workspace
 git clone git@gitlab.tudelft.nl:cor/ro47007/2023/team-20/cor_mdp_ahold.git
+
+# clone the FlexBE behavior engine and the states and behavior we made:
+git clone https://github.com/team-vigir/flexbe_behavior_engine.git
+git clone https://github.com/FlexBE/flexbe_app.git
+git clone git@gitlab.tudelft.nl:cor/ro47007/2023/team-20/albert_flexbe.git 
+
+# clone franka_ros and apriltag_ros repositories
+git clone https://github.com/frankaemika/franka_ros.git
+git clone https://github.com/AprilRobotics/apriltag_ros.git 
 
 # If not installed yet
 sudo apt install python3-vcstool

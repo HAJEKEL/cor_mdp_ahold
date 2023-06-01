@@ -2,9 +2,16 @@
 <launch>
 	<!-- customer interaction action interface -->
     <arg name="customer_interaction_namespace" default="customer_interaction_server" />
-    <node pkg="voice_requests" name="$(arg customer_interaction_namespace)" type="customer_interaction_server.py" output="screen" />
+    <node pkg="voice_requests" name="$(arg customer_interaction_namespace)" type="customer_interaction_server.py" output="screen">
 		<arg name="gpt_primer_path"		value="$(find voice_requests)/config/chatgpt_primer.txt" />
 	</node>
+
+    <!-- node to listen for trigger word (default "albert") -->
+    <param name="request_pending" type="bool" value="False" />
+    <node pkg="voice_requests" name="request_detector" type="request_detector.py" output="screen" />
+
+
+
 
 </launch>
 

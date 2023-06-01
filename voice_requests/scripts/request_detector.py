@@ -13,7 +13,7 @@ The robot can then start a customer interaction whenever it is ready with its cu
 """
 
 class KeywordDetector:
-    def __init__(self, keyword: str, rate: int = 20, request_param: str = "/customer_request"):
+    def __init__(self, keyword: str, rate: int = 20, request_param: str = "/request_pending"):
         self._keyword = keyword
         self._rate = rospy.Rate(rate)
         self._recognizer = sr.Recognizer()
@@ -55,7 +55,6 @@ class KeywordDetector:
 
 if __name__ == "__main__":
     rospy.init_node("keyword_detector")
-    rospy.set_param("/customer_request", False)
     detector = KeywordDetector("albert", rate=20, request_param="/customer_request")
     detector.run()
 

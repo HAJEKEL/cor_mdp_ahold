@@ -6,6 +6,8 @@ from gtts import gTTS
 import os
 import rospy
 
+from voice_tools import speak
+
 """
 This script spawn a node that listens on the laptop microphone to detect a keyword.
 When this keyword is detected, it sets a parameter on the parameter server, indicating that a customer request is pending.
@@ -47,15 +49,13 @@ class KeywordDetector:
                 if self._keyword in str(result).lower():
                     rospy.set_param(self._request_param, True)
                     rospy.loginfo("Keyword detected!")
-            else:
-                rospy.loginfo("Customer request pending.")
-                self._rate.sleep()
-                continue
+                    speak("I'll be with you in a moment.")
+                    rospy.loginfo("Request pending...")
                 
 
 if __name__ == "__main__":
     rospy.init_node("keyword_detector")
-    detector = KeywordDetector("albert", rate=20, request_param="/customer_request")
+    detector = KeywordDetector("albert", rate=5, request_param="/request_pending")
     detector.run()
 
         

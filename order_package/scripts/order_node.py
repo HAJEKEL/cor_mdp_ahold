@@ -20,6 +20,7 @@ It will act as a service and advertise the current product that is being process
 class OrderHandlerNode:
     def __init__(self):
         self.order_list = [] # List of orders to be processed
+        self.completed_list = [] # List of orders that have been completed
 
         self.order_list_table = "" 
         self.order_list_table_heavy = ""

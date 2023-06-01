@@ -31,7 +31,12 @@ class ChatGPTAssistant:
         self.model = model
         self.messages = []
         self.template = template
-        available_products = "yoghurt, milk, peach tea, mint tea, chocolate sprinkles, chocolate cereal, cereal" # change this to a query to the parameter server for products later
+
+        # get the available products from the parameter server
+        available_products = rospy.get_param("/products")
+        available_products = ", ".join(available_products.keys())
+        
+        # add the available products to the template
         self.messages.append({"role": "user", "content": self.template.format(available_products)})
 
 

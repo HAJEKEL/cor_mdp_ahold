@@ -23,9 +23,7 @@ Action server for a customer interaction with the chatGPT chatbot.
 class CustomerInteractionServer(object):
     _result = voice_requests.msg.CustomerInteractionResult()
 
-
     def __init__(self, name: str, template: Path, max_turns: int = 10):
-
 
         self._template = template.read_text()
         self._max_turns = max_turns

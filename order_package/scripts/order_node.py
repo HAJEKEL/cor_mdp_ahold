@@ -27,11 +27,9 @@ class OrderHandlerNode:
         # the current order is the first order in the order list
         self.current_order = None # Order that is currently being processed
 
-        self._request_srv = rospy.Service('/order_node/order_request', AddTask, self.handle_order_request)
+        self._request_srv = rospy.Service('/order_node/add_task', AddTask, self.handle_order_request)
         self._mark_completed_srv = rospy.Service('/order_node/mark_completed', Trigger, self.handle_mark_completed)
         self._current_order_pub = rospy.Publisher('/order_node/current_order', OrderGoal, queue_size=10)
-        self._current_order_pub_string = rospy.Publisher('/order_node/current_order_string', String, queue_size=10)
-        self._current_order_pub_waypoint = rospy.Publisher('/order_node/current_order_waypoint', Pose, queue_size=10)
 
         self._order_list_pub = rospy.Publisher('/order_node/order_list', String, queue_size=10)
 
@@ -110,18 +108,14 @@ class OrderHandlerNode:
         It will also publish the order list
         """
 
-
-
+        # Update the current order
         if self.order_list:
             self.current_order = self.order_list[0]
 
 
         # Publish the current order
         if self.current_order is not None:
-            current_order_string = f"Current order: {self.current_order.product_name} to {self.current_order.location_name} with request type {self.current_order.request_type}"
             self._current_order_pub.publish(self.current_order)
-            self._current_order_pub_string.publish(current_order_string)
-            self._current_order_pub_waypoint.publish(self.current_order.waypoint)
 
 
 

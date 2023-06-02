@@ -68,6 +68,13 @@ rosdep update
 rosdep install --from-paths . --ignore-src -y
 ```
 
+Finally, there are some additional dependencies needed for the voice control package.
+```bash
+sudo apt-get install libasound-dev portaudio19-dev libportaudio2 libportaudiocpp0
+pip install pyaudio
+cd ~/catkin_ws/src/cor_mdp_ahold && pip install -r requirements.txt
+```
+
 Finally, we build the packages using catkin.
 **Important**: Make sure that any python virtual environments are deactivated!
 ```bash

@@ -81,6 +81,8 @@ If everything is working correctly, and the chatbot has understood your request,
 
 ![in this example the chatbot was asked to help pick a box of cereal](./images/voice_requests_output.png)
 
+In this example, the chatbot was asked to help pick a box of cereal. You can see how a task is added to the order queue.
+
 
 
 

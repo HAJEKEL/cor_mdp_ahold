@@ -4,7 +4,7 @@
 
 The order package is designed to process product orders received from supermarket customers, connect to a database for order validation, and generate a list of items required for fulfilling the order.
 
-![drawio diagram](order_node_diagram.drawio.png)
+![drawio diagram](./order_node_diagram.drawio.png)
 
 
 

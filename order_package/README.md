@@ -10,24 +10,6 @@ The order package is designed to process product orders received from supermarke
 - Order Feasibility Check: The package performs feasibility checks on the order, ensuring that all requested products fit within the designated packaging constraints.
 - Item List Generation: Upon successful order validation, the package generates a list of items required for fulfilling the order, including their quantities. The order manager node extracts the corrosponding information from the ROS server.
 
-## Installation
-
-To use the order package, you need to have a working ROS environment. Follow the ROS installation instructions at http://wiki.ros.org/ROS/Installation if you haven't already set up ROS.
-
-Next, clone this repository into your catkin workspace and build the package using the following commands:
-
-You will also need pandas for this package.
-```
-pip install pandas
-```
-
-bash
-```
-cd <path_to_your_catkin_workspace>/src
-git clone https://gitlab.tudelft.nl/cor/ro47007/2023/team-20/cor_mdp_ahold/-/new/order_list/order_package.git
-cd ..
-catkin build
-```
 ## Usage
 
 Launch the order package with the following command:

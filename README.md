@@ -1,6 +1,6 @@
 # Group 20 - Ahold Delhaize - Order picking
 
-<img src="https://img.shields.io/badge/ROS%20version-melodic-blue.svg"/>
+<img src="https://img.shields.io/badge/ROS%20version-noetic-blue.svg"/>
 
 *Autors: Ernst Cancrinus, Kenny Brandon, Marijn de Rijk, Stan Vijverberg and Henk Jekel*
 

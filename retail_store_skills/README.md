@@ -43,5 +43,23 @@ In yet another terminal window, wait until moveit is fully initialized in the si
 ```bash
 rosrun actionlib_tools axclient.py /pick_server
 ```
-
 A GUI will pop up in which you can specify which apriltag id you would like to pick. For example id 18 is reachable from the initial position.
+
+There are action servers for picking the product, presenting the product and placing it in the basket.
+For picking the product type in the terminal:
+```bash
+rosrun retail_store_skills pick_client.py 18
+```
+For presenting the product to a customer type in the terminal:
+```bash
+rosrun retail_store_skills present_client.py 
+```
+For placing the product in the basket type in the terminal:
+```bash
+rosrun retail_store_skills place_basket_client.py
+```
+
+
+
+
+

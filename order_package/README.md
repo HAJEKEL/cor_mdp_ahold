@@ -45,14 +45,34 @@ Two custom message types have been defined in this package:
 Launch the order package with the following command:
 bash
 ```
-roslaunch order_package order_handler.py
+roslaunch order_package order_handler.launch
 ```
 
-Publish customer orders to the /name_list topic using the provided ROS message format. Ensure that the order message includes all necessary information such as the correct names and quantities.
+### Adding a new order
 
-The package will process the received order, connect to the backend database for order validation, and perform feasibility checks.
+Order requests will arrive from online customers, or from in-store customers via the [voice_requests](../voice_requests) package.
+To test the functionality of the order package, you can also manually add orders using the command line:
+```
+rosservice call /order_node/add_task
+```
+press tab (twice) to automatically fill in the `OrderRequest` message template.  Filling in the message and pressing enter should add the order (if the product exists in the store) to the order list.
+Below is an example of adding three products to the order list:
+![order list terminal](./images/order_list.png)
 
-If the order is feasible, the package will generate an item list message on the /name_list topic, containing the required items, their quantities, and locations.
+### Marking an order as completed
+
+The current order can be marked as completed by calling the `/order_node/mark_completed` service:
+```bash
+rosservice call /order_node/mark_completed
+```
+
+### Viewing the current order
+
+The current order can be viewed on the `/order_node/current_order` topic.
+```bash
+rostopic echo /order_node/current_order
+```
+
 
 ## Contact
 

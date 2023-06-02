@@ -96,5 +96,12 @@ The default simulation world was changed to the `AH_store`
 
 ## Repo structure
 
+More information concerning the packages we have implemented can be found in the README.md files of the respective packages.
 
-## Expected Functionality
+The main packages are:
+- [the order package](order_package): This package contains the nodes used for managin orders.
+- [the voice_requests package](voice_requests): This package contains the chatGPT-based voice assistant functionality.
+- [the retail_store_skills pakcage](retail_store_skills): This package contains action servers for the skills that the robot performs.
+- [the flexBE package](https://gitlab.tudelft.nl/cor/ro47007/2023/team-20/albert_flexbe): This package contains the FlexBE states and behaviors that we use for the complex behavioral control of our robot. Check it out by clicking the link. 
+
+

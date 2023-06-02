@@ -70,9 +70,15 @@ To test a customer interaction, run the example client node provided in this pac
 rosrun voice_requests customer_interaction_client.py
 ```
 
-Depending on your internet connection and load on the chatGPT servers, it might take a little while for the chatbot to respond.
+**note: Depending on your internet connection and load on the chatGPT servers, it might take a little while for the chatbot to respond.**
 
-*note: in the terminal you may see `ALSA lib ...` errors.  These can be safely ignored.*
+**note: in the terminal you may see `ALSA lib ...` errors.  These can be safely ignored.**
+
+
+### Expected output
+
+If everything is working correctly, and the chatbot has understood your request, you should see something like this in the terminal:
+
 
 
 

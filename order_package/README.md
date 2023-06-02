@@ -4,7 +4,9 @@
 
 The order package is designed to process product orders received from supermarket customers, connect to a database for order validation, and generate a list of items required for fulfilling the order.
 
-[order node diagram](<iframe src="https://drive.google.com/file/d/1ZsIpGFj6fFmcGAw_6hWqvUcJHWq1wo5v/preview" width="640" height="480" allow="autoplay"></iframe>)
+![drawio diagram](order_node_diagram.drawio.png)
+
+
 
 ### Features
 - Order Processing: The package provides functionalities to receive customer orders via a popup window and initiates the order handling process.

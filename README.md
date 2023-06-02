@@ -20,12 +20,9 @@ Welcome to the Supermarket Order Picking Robot project! This repository contains
 
 ## Installation
 
-To get started with the Supermarket Order Picking Robot, follow the installation and setup instructions provided below. It covers the necessary hardware requirements, software dependencies, and configuration steps. Once you've completed the setup, you can run the simulation and interact with the order interface.
+Our code is made to be run on Ubuntu 20.04 with [ROS noetic](http://wiki.ros.org/noetic/Installation). Also, make sure that the [moveit](https://moveit.ros.org/install/) library is installed, as well as the catkin build tool.
 
-## Full local environment
-For this option it's required to have ubuntu 20.04, ROS noetic and moveit installed on your computer.
-
-First, we create a fresh catkin workspace. This tutorial assumes that you have installed catkin. 
+First, we create a fresh catkin workspace.
 ```bash
 #source your environment:
  source /opt/ros/noetic/setup.bash
@@ -36,7 +33,8 @@ First, we create a fresh catkin workspace. This tutorial assumes that you have i
  cd src
 ```
 
-We use vcstool to clone git repositories of dependencies that should be built from source:
+Now, clone the required repositories into the `src` folder of your catkin workspace.
+We use vcstool to install required dependencies that should be built from source:
 ``` bash
 # Inside your catkin workspace
 git clone git@gitlab.tudelft.nl:cor/ro47007/2023/team-20/cor_mdp_ahold.git
@@ -46,11 +44,12 @@ git clone https://github.com/team-vigir/flexbe_behavior_engine.git
 git clone https://github.com/FlexBE/flexbe_app.git
 
 # Clone our made states and behaviors into repository
-git clone git@gitlab.tudelft.nl:cor/ro47007/2023/team-20/albert_flexbe.git 
+git clone git@gitlab.tudelft.nl:cor/ro47007/2023/team-20/albert_flexbe.git flex_albert_behaviors
 
 # clone franka_ros and apriltag_ros repositories
 git clone https://github.com/frankaemika/franka_ros.git
 git clone https://github.com/AprilRobotics/apriltag_ros.git 
+git clone https://github.com/AprilRobotics/apriltag.git 
 
 # If not installed yet
 sudo apt install python3-vcstool

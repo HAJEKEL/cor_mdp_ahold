@@ -39,11 +39,13 @@ We use vcstool to install required dependencies that should be built from source
 # Inside your catkin workspace
 git clone git@gitlab.tudelft.nl:cor/ro47007/2023/team-20/cor_mdp_ahold.git
 
-# clone the FlexBE behavior engine and the states and behavior we made:
+# clone the FlexBE behavior engine and the states and behavior we made. 
+# We used FlexBE to create a state machine model so that the robot can complete entire tasks without the need for running separate scripts. 
+# More information can be found in the readme in the albert_flexbe_git repository.
 git clone https://github.com/team-vigir/flexbe_behavior_engine.git
 git clone https://github.com/FlexBE/flexbe_app.git
 
-# Clone our made states and behaviors into repository
+# Clone our self-made states and behaviors into repository
 git clone git@gitlab.tudelft.nl:cor/ro47007/2023/team-20/albert_flexbe.git flex_albert_behaviors
 
 # clone franka_ros and apriltag_ros repositories

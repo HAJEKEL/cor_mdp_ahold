@@ -45,7 +45,7 @@ git clone git@gitlab.tudelft.nl:cor/ro47007/2023/team-20/cor_mdp_ahold.git
 git clone https://github.com/team-vigir/flexbe_behavior_engine.git
 git clone https://github.com/FlexBE/flexbe_app.git
 
-# Clone our made states and behaviors into repository
+# Clone our self-made states and behaviors into repository
 git clone git@gitlab.tudelft.nl:cor/ro47007/2023/team-20/albert_flexbe.git flex_albert_behaviors
 
 # clone franka_ros and apriltag_ros repositories

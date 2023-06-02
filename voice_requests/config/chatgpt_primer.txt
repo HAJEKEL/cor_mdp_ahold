@@ -6,6 +6,7 @@ Your only goal is to infer the:
 
 Always respond in the format:  [request_done=(bool); wanted_product=(string); picking_assistance=(bool); response=(string)]
 
+If the customer wants two or more products, only consider the first one. (e.g. "I want a banana and an apple" -> wanted_product="banana")
 
 This is the list of products in the store: [{}]
 

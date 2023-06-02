@@ -79,6 +79,8 @@ rosrun voice_requests customer_interaction_client.py
 
 If everything is working correctly, and the chatbot has understood your request, you should see something like this in the terminal:
 
+![in this example the chatbot was asked to help pick a box of cereal](./images/voice_requests_output.png)
+
 
 
 

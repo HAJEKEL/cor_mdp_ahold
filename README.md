@@ -5,11 +5,11 @@
 *Autors: Ernst Cancrinus, Kenny Brandon, Marijn de Rijk, Stan Vijverberg and Henk Jekel*
 
 
-
-
 Common ROS packages for the simulation of the Airlab Albert platform.
 
 **IMPORTANT**: For people familiar with the simulation from the KRR course in the previous quarter, we will not be using a singularity environment this time. This is because singularity containers are write-only and for the MDP course we expect you will need the ability to install additional dependencies. Instead we will suggest you to install things locally.
+
+[[_TOC_]]
 
 ## Overview
 
@@ -23,6 +23,33 @@ Welcome to the Supermarket Order Picking Robot project! This repository contains
 - Collaborative Planning: The software leverages advanced algorithms for task allocation, path planning, and collision avoidance to optimize the overall order picking process and ensure smooth robot operation.
 - Integration with Supermarket Systems: Our solution integrates with existing supermarket systems, such as inventory management and point-of-sale, ensuring seamless order processing and synchronization.
 - Fully implemented FlexBE behavior engine allowing complex behavior for the robot. 
+
+
+
+## Repo structure
+
+This repository contains (almost) all of the packages that we have developed for this project, as well as packages that have been provided by the AIRlab team.
+
+
+The packages that we developed are:
+- [the order package](order_package): This package contains the nodes used for managin orders.
+- [the voice_requests package](voice_requests): This package contains the chatGPT-based voice assistant functionality.
+- [the retail_store_skills pakcage](retail_store_skills): This package contains action servers for the skills that the robot performs.
+- [the flexBE package](https://gitlab.tudelft.nl/cor/ro47007/2023/team-20/albert_flexbe): This package contains the FlexBE states and behaviors that we use for the complex behavioral control of our robot.
+
+Information about these packages can be found in their respective READMEs (click on the links).
+
+**Note: the FlexBE package lives in a separate repository due to build errors we encountered when trying to build it in this repository**
+
+## Action servers & FlexBE states
+
+Our solution makes use of the [actionlib](http://wiki.ros.org/actionlib) package to implement the actions that the robot performs.
+Check out the [actionlib documentation](http://wiki.ros.org/actionlib) to learn more about the benefits of using action servers.
+
+For controlling the complex top-level behavior of the robot, we use the [FlexBE](http://philserver.bplaced.net/fbe/index.php) behavior engine.
+FlexBE is a powerful tool that allows us to create complex behaviors for the robot by combining simple states into a Finite State Machine (FSM) using a graphical user interface, the FlexBE App.
+
+The combination of actionlib and FlexBE allows us to wrap actionlib clients into FlexBE states, which is a powerful combination.
 
 
 ## Installation
@@ -101,15 +128,6 @@ roslaunch retail_store_skills load_skills.launch # action servers for skills
 
 
 
-## Repo structure
-
-More information concerning the packages we have implemented can be found in the README.md files of the respective packages.
-
-The main packages are:
-- [the order package](order_package): This package contains the nodes used for managin orders.
-- [the voice_requests package](voice_requests): This package contains the chatGPT-based voice assistant functionality.
-- [the retail_store_skills pakcage](retail_store_skills): This package contains action servers for the skills that the robot performs.
-- [the flexBE package](https://gitlab.tudelft.nl/cor/ro47007/2023/team-20/albert_flexbe): This package contains the FlexBE states and behaviors that we use for the complex behavioral control of our robot. Check it out by clicking the link. 
 
 
 

@@ -1,15 +1,14 @@
 # Group 20 - Ahold Delhaize - Order picking
-
+<p style="text-align: center;">
 <img src="https://img.shields.io/badge/ROS%20version-noetic-blue.svg"/>
 
 *Autors: Ernst Cancrinus, Kenny Brandon, Marijn de Rijk, Stan Vijverberg and Henk Jekel*
 
-
 Common ROS packages for the simulation of the Airlab Albert platform.
 
-**IMPORTANT**: For people familiar with the simulation from the KRR course in the previous quarter, we will not be using a singularity environment this time. This is because singularity containers are write-only and for the MDP course we expect you will need the ability to install additional dependencies. Instead we will suggest you to install things locally.
-
 [[_TOC_]]
+
+
 
 ## Overview
 
@@ -53,6 +52,9 @@ The combination of actionlib and FlexBE allows us to wrap actionlib clients into
 
 
 ## Installation
+
+**IMPORTANT**: For people familiar with the simulation from the KRR course in the previous quarter, we will not be using a singularity environment this time. This is because singularity containers are write-only and for the MDP course we expect you will need the ability to install additional dependencies. Instead we will suggest you to install things locally.
+
 
 Our code is made to be run on Ubuntu 20.04 with [ROS noetic](http://wiki.ros.org/noetic/Installation). Also, make sure that the [moveit](https://moveit.ros.org/install/) library is installed, as well as the catkin build tool.
 

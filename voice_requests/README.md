@@ -22,7 +22,11 @@ Every time a customer interaction takes place, a new chatGPT session is started.
 The products available in the store are gathered from the parameter server and inserted into this context, so that the chatbot will have an understanding of which products are available.
 
 ### Parsing
-In order to reliably parse chatGPT's responses, we use a small "hack": we tell chatGPT to always answer in the format [request_done=(bool); wanted_product=(string); picking_assistance=(bool); response=(string)].  This ensures that we always know if an interaction is complete, and which product the customer wants..
+In order to reliably parse chatGPT's responses, we use a small "hack": we tell chatGPT to always answer in the format: 
+
+*[request_done=(bool); wanted_product=(string); picking_assistance=(bool); response=(string)]*.  
+
+This ensures that we always know if an interaction is complete, and which product the customer wants..
 
 ### Benefits
 Using chatGPT for the backend has several benefits:
@@ -32,11 +36,47 @@ Using chatGPT for the backend has several benefits:
 
 
 
-
-
-
 ## Dependencies
 The dependencies needed for this package are listed in this repositorie's main [README.md](../README.md) file.
+
+
+## Running the package
+
+As mentioned above, the chatbot recieves the products available in the store from the parameter server.
+The setting of these parameters is done by the [order_package launch file](../order_package/launch/order_handler.launch), so we need to make sure that this is running.
+
+To run the package:
+
+first, start the order package:
+```bash
+roslaunch order_package order_handler.launch
+```
+
+Then, start the voice control package:
+```bash
+roslaunch voice_requests voice_requests.launch
+```
+
+### "Hello Albert"
+
+To check if everything is working as expected, you can try saying "Hello Albert" to the robot.
+If everything is working correctly, the robot should respond with "Hello, how can I help you?".
+
+
+### Customer interaction
+
+To test a customer interaction, run the example client node provided in this package:
+```bash
+rosrun voice_requests customer_interaction_client.py
+```
+
+Depending on your internet connection and load on the chatGPT servers, it might take a little while for the chatbot to respond.
+
+*note: in the terminal you may see `ALSA lib ...` errors.  These can be safely ignored.*
+
+
+
+
 
 
 

@@ -92,7 +92,14 @@ To start the simulation environment:
 roslaunch albert_gazebo albert_gazebo_navigation.launch
 ```
 
-The default simulation world was changed to the `AH_store`
+To start the packages that are developed for this project, run these commands in separate terminals:
+```bash
+roslaunch order_package order_manager.launch # order package
+roslaunch voice_requests voice_requests.launch # voice assistant
+roslaunch retail_store_skills load_skills.launch # action servers for skills
+```
+
+
 
 ## Repo structure
 
@@ -103,5 +110,6 @@ The main packages are:
 - [the voice_requests package](voice_requests): This package contains the chatGPT-based voice assistant functionality.
 - [the retail_store_skills pakcage](retail_store_skills): This package contains action servers for the skills that the robot performs.
 - [the flexBE package](https://gitlab.tudelft.nl/cor/ro47007/2023/team-20/albert_flexbe): This package contains the FlexBE states and behaviors that we use for the complex behavioral control of our robot. Check it out by clicking the link. 
+
 
 

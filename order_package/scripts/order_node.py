@@ -112,6 +112,8 @@ class OrderHandlerNode:
         # Update the current order
         if self.order_list:
             self.current_order = self.order_list[0]
+        else:
+            self.current_order = None
 
 
         # Publish the current order

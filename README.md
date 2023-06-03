@@ -49,7 +49,7 @@ This repository contains (almost) all of the packages that we have developed for
 
 
 The packages that we developed are:
-- [the order package](order_package): This package contains the nodes used for managin orders.
+- [the order package](order_package): This package contains the nodes used for managing orders.
 - [the voice_requests package](voice_requests): This package contains the chatGPT-based voice assistant functionality.
 - [the retail_store_skills pakcage](retail_store_skills): This package contains action servers for the skills that the robot performs.
 - [the flexBE package](https://gitlab.tudelft.nl/cor/ro47007/2023/team-20/albert_flexbe): This package contains the FlexBE states and behaviors that we use for the complex behavioral control of our robot.
@@ -142,9 +142,12 @@ roslaunch albert_gazebo albert_gazebo_navigation.launch
 
 To start the packages that are developed for this project, run these commands in separate terminals:
 ```bash
-roslaunch order_package order_manager.launch # order package
-roslaunch voice_requests voice_requests.launch # voice assistant
-roslaunch retail_store_skills load_skills.launch # action servers for skills
+# order package
+roslaunch order_package order_manager.launch 
+# voice assistant
+roslaunch voice_requests voice_requests.launch 
+# action servers for skills
+roslaunch retail_store_skills load_skills.launch 
 ```
 
 

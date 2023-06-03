@@ -17,6 +17,8 @@ Welcome to the Supermarket Order Picking Robot project! This repository contains
 
 ![simulation](images/simulation.png)
 
+
+
 ### Key Features
 
 - Order Picking: The robot autonomously navigates supermarket aisles, identifies the items in customer orders, and picks them from shelves with precision.
@@ -26,7 +28,20 @@ Welcome to the Supermarket Order Picking Robot project! This repository contains
 - Integration with Supermarket Systems: Our solution integrates with existing supermarket systems, such as inventory management and point-of-sale, ensuring seamless order processing and synchronization.
 - Fully implemented FlexBE behavior engine allowing complex behavior for the robot. 
 
+### Video Demonstration
 
+So far, successful execution of the following tasks has been demonstrated on the real Albert robot:
+
+- Scanning for a product: The robot is able to scan and identify products.
+
+- Picking a product from a shelf: The robot can accurately pick up products from a shelf.
+
+- Placing a product in the basket: The robot is capable of placing the picked product in the basket.
+
+- Presenting a product to a customer: The robot can effectively present the chosen product to a customer.
+
+You can witness these accomplishments in the [video demonstration](https://youtu.be/8ERzKw5EQ-4)
+ provided. 
 
 ## Repo structure
 
@@ -38,6 +53,7 @@ The packages that we developed are:
 - [the voice_requests package](voice_requests): This package contains the chatGPT-based voice assistant functionality.
 - [the retail_store_skills pakcage](retail_store_skills): This package contains action servers for the skills that the robot performs.
 - [the flexBE package](https://gitlab.tudelft.nl/cor/ro47007/2023/team-20/albert_flexbe): This package contains the FlexBE states and behaviors that we use for the complex behavioral control of our robot.
+
 
 Information about these packages can be found in their respective READMEs (click on the links).
 

@@ -15,6 +15,8 @@ Common ROS packages for the simulation of the Airlab Albert platform.
 
 Welcome to the Supermarket Order Picking Robot project! This repository contains the software stack developed to enable a robot to navigate supermarket aisles, pick and pack customer orders, and provide assistance to shoppers. Our goal is to enhance the shopping experience by improving order accuracy, efficiency, and customer satisfaction. This is a robotics multidisciplinary project in collaboration with AholdDelhaize.
 
+![simulation](images/simulation.png)
+
 ### Key Features
 
 - Order Picking: The robot autonomously navigates supermarket aisles, identifies the items in customer orders, and picks them from shelves with precision.

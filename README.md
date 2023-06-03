@@ -143,7 +143,7 @@ roslaunch albert_gazebo albert_gazebo_navigation.launch
 To start the packages that are developed for this project, run these commands in separate terminals:
 ```bash
 # order package
-roslaunch order_package order_manager.launch 
+roslaunch order_package order_handler.launch 
 # voice assistant
 roslaunch voice_requests voice_requests.launch 
 # action servers for skills

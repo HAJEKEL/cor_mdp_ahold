@@ -84,13 +84,13 @@ git clone https://github.com/FlexBE/flexbe_app.git
 git clone git@gitlab.tudelft.nl:cor/ro47007/2023/team-20/albert_flexbe.git flex_albert_behaviors
 
 # clone franka_ros and apriltag_ros repositories
-git clone https://github.com/frankaemika/franka_ros.git
 git clone https://github.com/AprilRobotics/apriltag_ros.git 
 git clone https://github.com/AprilRobotics/apriltag.git 
 
 # If not installed yet
 sudo apt install python3-vcstool
 
+#do not forget this line
 vcs import --input cor_mdp_ahold/retail_store_simulation.rosinstall .
 ```
 

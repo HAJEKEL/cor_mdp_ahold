@@ -1,0 +1,8 @@
+# Definition of the service message structure
+
+# Request
+sensor_msgs/LaserScan lidar_scan
+
+# Response
+---
+geometry_msgs/PoseStamped[] camera_poses

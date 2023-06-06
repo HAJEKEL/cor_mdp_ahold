@@ -8,7 +8,7 @@ string product_name
 uint8 request_type
 
 # customer requests will have an order id of 0
-uint32 order_id
+float64 order_id
 
 
 

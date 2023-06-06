@@ -19,14 +19,21 @@ In another terminal window launch the skills:
 roslaunch retail_store_skills load_skills.launch
 ```
 
-In yet another terminal window, wait until moveit is fully initialized in the simulation then run the following to execute a pick action:
-```bash
-rosrun actionlib_tools axclient.py /pick_server
-```
-A GUI will pop up in which you can specify which apriltag id you would like to pick. For example id 18 is reachable from the initial position.
-
+Wait until moveit is fully initialized in the simulation.
 There are action servers for picking the product, presenting the product and placing it in the basket.
-For picking the product type in the terminal:
+
+In order to pick a specific product you need to check the box "TF" in the display section in  Rviz.
+If you do not see the TF box in the display section you must add it by clicking Add -> RVIZ -> TF.
+
+Then you will see it detects the products their local axis by their april tags.
+If you still do not see the tags make sure the endpoint of the robotarm is pointed towards the shelves.
+
+Then you can see which frames from the april tags it is detecting.
+By going in the display section to TF -> Frames you can see some of them are called "tag_" and with a number.
+
+Pick a frame of the detected tags that you want to pick, for example: tag_18
+
+In yet another terminal window, run the following to execute a pick action:
 ```bash
 rosrun retail_store_skills pick_client.py 18
 ```

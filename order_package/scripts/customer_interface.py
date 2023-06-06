@@ -41,6 +41,13 @@ class CustomerInterface:
             # create buttons for increasing and decreasing the amount
             tk.Button(self.root, text="+", command=lambda item=item: self.update_amount(item, 1)).grid(row=i, column=3, sticky="nsew")
             tk.Button(self.root, text="-", command=lambda item=item: self.update_amount(item, -1)).grid(row=i, column=1, sticky="nsew")
+            exit_button = tk.Button(self.root, text="Submit Order", command=self.root.destroy)
+            exit_button.grid(row=10, column=1, columnspan=3, sticky="nsew")
+
+    def run(self):
+        self.root.mainloop()
+        return self.item_amounts
+
 
 
 

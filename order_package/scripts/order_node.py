@@ -55,6 +55,10 @@ class OrderHandlerNode:
             self.order_list.insert(0, goal) # add product to the front of the list
             rospy.loginfo(f"In-store customer order  added to the front of the order list")
 
+        elif goal.request_type == 3: # this means the order is a return to base station
+            self.order_list.append(goal) # add product to the end of the list
+            rospy.loginfo(f"Return to base station order added to the end of the order list")
+
         # Publish the order list
         self.update_order_list()
 

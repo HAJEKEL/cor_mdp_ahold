@@ -27,6 +27,41 @@ def db_scan_point_cloud(self, point_cloud):
     list_of_clusters = [point_cloud[labels == (i-1)] for i in range(cluster_count)]
     return list_of_clusters, cluster_count
 
+def filter_pedestrian_like_clusters(self, cluster_list):
+    pedestrian_like_clusters = []
+    
+    for cluster in cluster_list:
+        x_min, x_max = np.min(cluster[:, 0]), np.max(cluster[:, 0])
+        y_min, y_max = np.min(cluster[:, 1]), np.max(cluster[:, 1])
+        width = x_max - x_min
+        depth = y_max - y_min
+
+        if 0.2 < width < 1.2 and 0.2 < depth < 1.2:
+            pedestrian_like_clusters.append(cluster)
+    
+    return pedestrian_like_clusters
+
+# This function publishes the point cloud given as input on RViz. It is recommended to use it only in static situations
+# where the environment does not change and the robot is stationary.
+def publish_lidar_proposals(self, lidar_pedestrian_like):
+    
+    # Wait for a moment to allow roscore to establish connections
+    rospy.sleep(1.)
+    
+    # Extract the cloud points
+    cloud_points = lidar_pedestrian_like
+    
+    # Create a header for the message to be published
+    header = std_msgs.msg.Header()
+    header.stamp = rospy.Time.now()
+    header.frame_id = 'map' 
+    
+    # Create a PointCloud2 message from the cloud points
+    point_cloud_msg = pcl2.create_cloud_xyz32(header, cloud_points)
+    
+    # Publish the PointCloud2 message
+    rospy.loginfo("Publishing lidar proposal point cloud!")
+    self.point_cloud_pub.publish(point_cloud_msg)
 
 
 

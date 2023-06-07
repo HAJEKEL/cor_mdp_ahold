@@ -1,6 +1,6 @@
 #!/usr/bin/env python3.8
 
-from sklearn.cluster import DBSCAN
+from sklearn.cluster import DBSCAN #sklearn installeren
 from sensor_msgs.msg import LaserScan
 import tf2_ros
 import geometry_msgs.msg

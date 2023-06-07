@@ -72,9 +72,11 @@ class PresentActionServer(object):
 
         # Step 1: Get the current joint positions
         joint_positions = self._group.get_current_joint_values()
+        rospy.loginfo(f"Obtained the current joint positions")
 
         # Step 2: Get the cluster center position from TFMessage
         cluster_center = self.get_cluster_center_from_tf()
+        rospy.loginfo(f"Cluster center obtained")
 
         if cluster_center is None:
             rospy.loginfo(f"Cluster center not found, present action aborted!")
@@ -88,17 +90,27 @@ class PresentActionServer(object):
         current_y = joint_positions[1]  # Assuming the current y position is stored in the second joint position
 
         rotation_angle = math.atan2(target_y - current_y, target_x - current_x)
+        rospy.loginfo(f"Rotation angle calculated")
 
         # Step 4: Rotate the first joint by the calculated angle
         joint_positions[0] += rotation_angle
+        print(joint_positions)
+        rospy.loginfo(f"Calculated rotation angle has been set as desired joint position")
+        
+        # Step 4.5: Adjust the position of the last joint by 90 degrees
+        joint_positions[-1] += math.pi/2  # Rotate by 90 degrees (pi/2 radians)
+        rospy.loginfo(f"adjusted the desired last joint position")
 
         # Step 5: Set the target joint positions and move the arm
         self._group.set_joint_value_target(joint_positions)
         succeeded = self._group.go(wait=True)
+        if succeeded:
+            rospy.loginfo(f"First joint rotated with the calculated joint angle")
 
         if not succeeded:
             self._as.set_aborted()
-            return
+            rospy.loginfo(f"Could not rotate the arm to the desired calculated angle")
+        
 
         # Step 6: wait until part not present in gripper
         while self._vacuum_state.part_present:
@@ -106,14 +118,18 @@ class PresentActionServer(object):
             self._rate.sleep()
 
         # Step 7: if part not present, initialize dropoff
-        rospy.loginfo(f"Dropping it off")
+        rospy.loginfo(f"Turning off the vacuum")
         goal = DropOffGoal(timeout=10)
         self._dropoff_client.send_goal(goal)
 
         # Step 8: return to home position
         succeeded = self._group.go(start_pos, wait=True)
+        if succeeded:
+            rospy.loginfo(f"Returned to home position")
+            return
 
         if not succeeded:
+            rospy.loginfo(f"Could not return to home position")
             self._as.set_aborted()
             return
 

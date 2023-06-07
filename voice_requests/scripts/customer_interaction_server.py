@@ -3,15 +3,14 @@
 from gtts import gTTS
 import speech_recognition as sr
 import rospy
-import os
 import actionlib
-import argparse
 from pathlib import Path
 
 from voice_tools import speak
 
 from chatgpt_response import ChatGPTAssistant, ClientResponse
 import voice_requests.msg
+import sounddevice
 
 
 
@@ -25,14 +24,16 @@ class CustomerInteractionServer(object):
 
     def __init__(self, name: str, template: Path, max_turns: int = 10):
 
-        self._template = template.read_text()
+        self._template = template.read_text() # The chatgpt primer template
         self._max_turns = max_turns
+
         # setup speech recognition
         self._recognizer = sr.Recognizer()
         self._mic = sr.Microphone(device_index=None)
         with self._mic as source:
             self._recognizer.adjust_for_ambient_noise(source)
 
+        # setup action server
         self._rate = rospy.Rate(20)
         self._action_name = name
         self._as = actionlib.SimpleActionServer(self._action_name, 
@@ -40,10 +41,11 @@ class CustomerInteractionServer(object):
                                                 execute_cb=self.as_cb, 
                                                 auto_start=False)
         self._as.start()
+        rospy.loginfo("Customer interaction server running...")
+
 
     def user_response(self):
         rospy.loginfo("Listening for user input...")
-        mic = sr.Microphone(device_index=None)
         with self._mic as source:
             audio = self._recognizer.listen(source, phrase_time_limit=5)
 
@@ -63,7 +65,7 @@ class CustomerInteractionServer(object):
         Callback for action server.
         """
         rospy.loginfo("Starting customer interaction...")
-        chatbot = ChatGPTAssistant(self._template)
+        chatbot = ChatGPTAssistant(self._template) # We start a new chatbot for each interaction
 
         # Get initial response from chatbot
         response = chatbot.get_response()

@@ -3,8 +3,8 @@
 import speech_recognition as sr
 import time
 from gtts import gTTS
-import os
 import rospy
+import sounddevice
 
 from voice_tools import speak
 
@@ -30,11 +30,9 @@ class KeywordDetector:
         with self._mic as source:
             audio = self._recognizer.listen(source, phrase_time_limit=5)
         try:
-            rospy.loginfo("Google Speech Recognition thinks you said : \"" + self._recognizer.recognize_google(audio) + "\"")
             return self._recognizer.recognize_google(audio)
             
         except sr.UnknownValueError:
-            rospy.loginfo("Google Speech Recognition could not understand audio")
             return False
         except sr.RequestError as e:
             rospy.loginfo("Could not request results from Google Speech Recognition service; {0}".format(e))

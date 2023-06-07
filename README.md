@@ -123,6 +123,17 @@ rosdep update
 rosdep install --from-paths . --ignore-src -y
 ```
 
+The voice control functionality has the following dependencies.
+
+```bash
+sudo apt-get install libasound-dev portaudio19-dev libportaudio2 libportaudiocpp0
+
+# Then install the pyaudio package:
+pip install pyaudio
+# We also need to install the google test to speech plugin, as well ass the speech recognition package:
+pip install gTTs SpeechRecognition
+```
+
 Finally, we build the packages using catkin.
 **Important**: Make sure that any python virtual environments are deactivated!
 ```bash

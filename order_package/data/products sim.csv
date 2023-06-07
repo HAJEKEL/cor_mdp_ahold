@@ -1,0 +1,4 @@
+product_name,store_location,min_tag_id,max_tag_id
+chocolate_sprinkles,shelf_1,0,20
+mango_tea,shelf_1,21,40
+forest_fruits_tea,shelf_4,41,60

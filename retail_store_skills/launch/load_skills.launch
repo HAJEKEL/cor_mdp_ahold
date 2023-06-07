@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
+  <param name="arm_home_position" value = "[0.0, -0.8, 0.0, -2.5, 0.5, 3.1, 0.8]" />
+
+
   <arg name="pick_namespace" default="pick_server" />
   <node pkg="retail_store_skills" name="$(arg pick_namespace)" type="pick_server_moveit.py" output="screen" />
 
   <arg name="place_namespace" default="place_server" />
   <node pkg="retail_store_skills" name="$(arg place_namespace)" type="place_server_moveit.py" output="screen" />
+
+  <arg name="home_arm_namespace" default="home_arm_server" />
+  <node pkg="retail_store_skills" name="$(arg home_arm_namespace)" type="home_arm_server.py" output="screen" />
 
   <arg name="look_for_item_namespace" default="look_for_item_server" />
   <node pkg="retail_store_skills" name="$(arg look_for_item_namespace)" type="look_for_item_server_moveit.py" output="screen" />

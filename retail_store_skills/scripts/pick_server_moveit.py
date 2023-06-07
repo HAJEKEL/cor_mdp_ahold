@@ -115,7 +115,6 @@ class PickActionServer(object):
         succeeded = self._group.execute(plan, wait=True)
         rospy.loginfo(f"Pick action up {'succeeded' if succeeded else 'failed'}")
         if not succeeded or self._as.is_preempt_requested():
-            self._collision_box_interface.remove_all()
             self._as.set_aborted()
             return
 
@@ -129,7 +128,6 @@ class PickActionServer(object):
         succeeded = self._group.execute(plan, wait=True)
         rospy.loginfo(f"Pick action backwards {'succeeded' if succeeded else 'failed'}")
         if not succeeded or self._as.is_preempt_requested():
-            self._collision_box_interface.remove_all()
             self._as.set_aborted()
             return
 
@@ -141,7 +139,6 @@ class PickActionServer(object):
         if succeeded and not self._as.is_preempt_requested():
             self._as.set_succeeded()
         else:
-            self._collision_box_interface.remove_all()
             self._as.set_aborted()
 
         self._collision_box_interface.remove_box(box_name="basket_box")

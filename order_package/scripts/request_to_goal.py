@@ -71,14 +71,15 @@ def request_to_goal(request: OrderRequest) -> OrderGoal:
     goal.base_yaw = float(dict_waypoint["yaw"])
 
 
+
+
     # get the april tags for the store location from the parameter server
     if request.request_type != 3:
         try:
-            min_tag_id = rospy.get_param("/products/" + goal.product_name + "/min_tag_id")
-            max_tag_id = rospy.get_param("/products/" + goal.product_name + "/max_tag_id")
+            goal.min_tag_id = rospy.get_param("/products/" + goal.product_name + "/min_tag_id")
+            goal.max_tag_id = rospy.get_param("/products/" + goal.product_name + "/max_tag_id")
         except KeyError:
             rospy.logerr("No april tags for " + goal.product_name + " found on parameter server")
-        goal.april_tags = list(range(min_tag_id, max_tag_id + 1))
 
     return goal
 

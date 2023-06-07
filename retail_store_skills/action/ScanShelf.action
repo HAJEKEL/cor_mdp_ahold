@@ -1,7 +1,10 @@
 #goal definition
 float64 shelf_direction
+uint32 min_tag_id
+uint32 max_tag_id
 ---
 #result definition
 bool success
+uint32 tag_id #the tag id of the nearest wanted product
 ---
 #feedback

@@ -51,11 +51,13 @@ class HomeArmServer(object):
         # Return a success response
         if self._as.is_preempt_requested():
             self._as.set_preempted()
+            return
         else:
+            result = HomeArmResult()
+            result.success = True
             self._group.go(self._home_position, wait=True)
-            self._as.set_succeeded()
 
-        return
+        return result
 
 
 

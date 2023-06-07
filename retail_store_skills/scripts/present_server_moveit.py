@@ -6,6 +6,7 @@ import actionlib
 import tf  # part of robot_state_publisher support for 3D transformations
 import moveit_commander  # Python API for MoveIt
 
+
 # Message types
 from retail_store_skills.msg import *
 from franka_vacuum_gripper.msg import VacuumState, DropOffGoal, DropOffAction
@@ -57,6 +58,18 @@ class PresentActionServer(object):
         #     self._as.set_aborted()
         #     return
 
+
+        # Step 0: Joint goal start position
+        rospy.loginfo("Present action moving to start pos")
+        start_pos = [-0.0, -0.8, 0.0, -2.3, 0.0, 1.6, 0.8]
+        succeeded = self._group.go(start_pos, wait=True)
+        rospy.loginfo("Present action finished moving to start pos")
+
+        if not succeeded:
+            rospy.loginfo(f"Not able to move to start position, present action aborted!")
+            self._as.set_aborted()
+            return
+
         # Step 1: Get the current joint positions
         joint_positions = self._group.get_current_joint_values()
 
@@ -72,6 +85,7 @@ class PresentActionServer(object):
         target_x = cluster_center[0]
         target_y = cluster_center[1]
         current_x = joint_positions[0]  # Assuming the current rotation angle is stored in the first joint position
+        current_y = joint_positions[1]  # Assuming the current y position is stored in the second joint position
 
         rotation_angle = math.atan2(target_y - current_y, target_x - current_x)
 
@@ -110,12 +124,16 @@ class PresentActionServer(object):
     def get_cluster_center_from_tf(self):
         try:
             # Retrieve the latest transform from "base_link" to "frame_cluster_1"
-            trans = self._tl.lookup_transform("base_link", "frame_cluster_1", rospy.Time())
-            cluster_center = [trans.transform.translation.x, trans.transform.translation.y]
+            trans, _ = self._tl.lookupTransform("base_link", "frame_cluster_1", rospy.Time())
+            transform = geometry_msgs.msg.Transform()
+            transform.translation.x = trans[0]
+            transform.translation.y = trans[1]
+            cluster_center = [transform.translation.x, transform.translation.y]
             return cluster_center
         except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
             rospy.loginfo("Error retrieving cluster center from TF")
             return None
+
 
 
 if __name__ == "__main__":

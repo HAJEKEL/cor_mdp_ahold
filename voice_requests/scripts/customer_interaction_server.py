@@ -9,7 +9,8 @@ from pathlib import Path
 from voice_tools import speak
 
 from chatgpt_response import ChatGPTAssistant, ClientResponse
-import voice_requests.msg
+from voice_requests.msg import CustomerInteractionAction, CustomerInteractionResult
+import voice_requests
 import sounddevice
 
 
@@ -20,7 +21,7 @@ Action server for a customer interaction with the chatGPT chatbot.
 	
 
 class CustomerInteractionServer(object):
-    _result = voice_requests.msg.CustomerInteractionResult()
+    _result = CustomerInteractionResult()
 
     def __init__(self, name: str, template: Path, max_turns: int = 10):
 
@@ -103,7 +104,8 @@ class CustomerInteractionServer(object):
                 rospy.loginfo(f"Customer wants the product: {self._result.wanted_product} and requires assistance: {self._result.picking_assistance}")
                 # publish the result
                 self._as.set_succeeded(self._result)
-                return
+                return self._result
+
 
             if self._as.is_preempt_requested():
                 rospy.loginfo("Preempted customer interaction")
@@ -124,7 +126,6 @@ if __name__ == '__main__':
         template = Path(rospy.get_param("/gpt_primer_path"))
     else:
         template = Path(__file__).parent.parent / "config" / "chatgpt_primer.txt"
-
 
 
     rospy.init_node('customer_interaction_server')

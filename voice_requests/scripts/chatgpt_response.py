@@ -1,6 +1,7 @@
 import openai
 # Marijn's API key
 openai.api_key ='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'
+from order_package.msg import OrderRequest
 
 import rospy
 from pathlib import Path

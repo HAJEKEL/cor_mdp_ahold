@@ -1,0 +1,4 @@
+<launch>
+    <node name="lidar_service_server_node" pkg="human_detection" type="lidar_service_server.py" output="screen" />
+    <node name="image_service_server_node" pkg="human_detection" type="image_service_server.py" output="screen" />
+</launch>

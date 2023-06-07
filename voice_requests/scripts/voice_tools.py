@@ -10,7 +10,7 @@ import rospy
 def speak(text):
     tts = gTTS(text=text, lang='en-uk')
     tts.save("voice.mp3")
-    os.system("mpg321 voice.mp3")
+    os.system("mpg321 -q voice.mp3")
 
 
 

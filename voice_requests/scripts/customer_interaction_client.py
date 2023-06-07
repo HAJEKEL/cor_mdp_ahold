@@ -41,7 +41,7 @@ class CustomerInteractionClient(object):
 
         # send order request
         request = OrderRequest()
-        request.product_name = result.wanted_product
+        request.product_name = result.wanted_product.strip('\'')
 
         if result.picking_assistance:
             request.request_type = 1

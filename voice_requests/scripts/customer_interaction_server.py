@@ -41,6 +41,7 @@ class CustomerInteractionServer(object):
                                                 execute_cb=self.as_cb, 
                                                 auto_start=False)
         self._as.start()
+        rospy.loginfo("Customer interaction server running...")
 
 
     def user_response(self):
@@ -64,7 +65,7 @@ class CustomerInteractionServer(object):
         Callback for action server.
         """
         rospy.loginfo("Starting customer interaction...")
-        chatbot = ChatGPTAssistant(self._template)
+        chatbot = ChatGPTAssistant(self._template) # We start a new chatbot for each interaction
 
         # Get initial response from chatbot
         response = chatbot.get_response()

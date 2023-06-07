@@ -14,7 +14,7 @@ from tf.transformations import quaternion_from_euler
 
 def waypoint_from_param(waypoint_name: str) -> Pose:
     """
-    Converts a parameter server waypoint (x,y,z,yaw) name to a Pose object
+    NOT USED ANYMORE: Converts a parameter server waypoint (x,y,z,yaw) name to a Pose object
     """
     result = Pose()
 
@@ -63,8 +63,13 @@ def request_to_goal(request: OrderRequest) -> OrderGoal:
     except KeyError:
         rospy.logerr("No waypoint for " + goal.location_name + " found on parameter server")
 
+    # Get the waypoint from the parameter server
+    dict_waypoint = rospy.get_param("/waypoints/"+ waypoint_name)
 
-    goal.waypoint = waypoint_from_param(waypoint_name)
+    goal.base_x = float(dict_waypoint["x"])
+    goal.base_y = float(dict_waypoint["y"])
+    goal.base_yaw = float(dict_waypoint["yaw"])
+
 
     # get the april tags for the store location from the parameter server
     if request.request_type != 3:

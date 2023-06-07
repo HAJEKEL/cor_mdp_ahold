@@ -5,7 +5,7 @@
 	<rosparam command="load" file="$(find order_package)/config/store_locations.yaml" />
 
 
-    <arg name="product_data_path" default="$(find order_package)/data/products.csv" />
+    <arg name="product_data_path" default="$(find order_package)/data/products_sim.csv" />
     <node pkg="order_package" name="product_param_loader" type="product_param_loader.py" clear_params="true">
             <param name="product_data_path" value="$(arg product_data_path)" />
     </node>

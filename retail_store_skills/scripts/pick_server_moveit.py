@@ -85,7 +85,17 @@ class PickActionServer(object):
             self._as.set_aborted()
             return
 
-        # Step 3: Cartesian forward
+        # step 3: start vacuum pump
+        goal = VacuumGoal(vacuum=10)
+        res = self._vacuum_client.send_goal(goal)
+
+        if not succeeded or self._as.is_preempt_requested():
+            self._as.set_aborted()
+
+            return
+
+
+        # Step 4: Cartesian forward
         goal = pre_pose
         goal.pose.position.z -= (self.pick_distance + 0.02)
         goal_map_frame = self._tl.transformPose("map", goal) # Because compute_cartesian_path assumes poses in planning_frame(=map)
@@ -96,13 +106,6 @@ class PickActionServer(object):
             self._as.set_aborted()
             return
 
-        # step 3: start vacuum pump
-        goal = VacuumGoal(vacuum=10)
-        res = self._vacuum_client.send_goal(goal)
-
-        if not succeeded or self._as.is_preempt_requested():
-            self._as.set_aborted()
-            return
 
         # Step 4: Add product collision box
         #self._collision_box_interface.add_product_box()

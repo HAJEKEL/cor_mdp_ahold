@@ -28,7 +28,7 @@ class ClientResponse:
 
 
 class ChatGPTAssistant:
-    def __init__(self, template: str, model="gpt-4"):
+    def __init__(self, template: str, model="gpt-3.5-turbo"):
         self.model = model
         self.messages = []
         self.template = template

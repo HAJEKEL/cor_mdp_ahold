@@ -2,7 +2,7 @@
 <launch>
 
   <include file="$(find order_package)/launch/order_handler.launch"/>
-  <include file="$(find retail_store_skills)/launch/load_skills.launch"/>
+  <include file="$(find retail_store_skills)/launch/load_skills_reallife.launch"/>
   <include file="$(find voice_requests)/launch/voice_requests.launch"/>
 
 </launch>

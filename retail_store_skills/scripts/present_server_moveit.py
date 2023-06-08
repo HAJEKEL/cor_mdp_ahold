@@ -53,10 +53,10 @@ class PresentActionServer(object):
     def as_cb(self, req):
         rospy.loginfo(f"Present action called")
 
-        # if not self._vacuum_state.part_present:
-        #     rospy.loginfo(f"Part not present, present action aborted!")
-        #     self._as.set_aborted()
-        #     return
+        if not self._vacuum_state.part_present:
+            rospy.loginfo(f"Part not present, present action aborted!")
+            self._as.set_aborted()
+            return
 
 
         # Step 0: Joint goal start position
@@ -111,9 +111,16 @@ class PresentActionServer(object):
             rospy.loginfo(f"Could not rotate the arm to the desired calculated angles")
         
 
-        # Step 6: wait until part not present in gripper
+        # Step 6: wait until part not present in gripper, or timeout
+        timeout = rospy.Time.now() + rospy.Duration(10)
+
         while self._vacuum_state.part_present:
             rospy.loginfo("Part present, waiting...")
+            if rospy.Time.now() > timeout:
+                rospy.loginfo("Timeout reached, present action aborted!")
+                self._as.set_aborted()
+                return
+
             self._rate.sleep()
 
         # Step 7: if part not present, initialize dropoff

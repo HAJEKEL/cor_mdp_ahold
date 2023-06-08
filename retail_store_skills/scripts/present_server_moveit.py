@@ -8,6 +8,8 @@ import moveit_commander  # Python API for MoveIt
 
 
 # Message types
+from retail_store_skills.msg import CustomerDetectionAction, CustomerDetectionGoal
+
 from retail_store_skills.msg import *
 from franka_vacuum_gripper.msg import VacuumState, DropOffGoal, DropOffAction
 import tf2_ros
@@ -110,6 +112,25 @@ class PresentActionServer(object):
             self._as.set_aborted()
             rospy.loginfo(f"Could not rotate the arm to the desired calculated angles")
         
+        # Step 5.5: Check if the cluster is a human
+        customer_detected = self.customer_detection(cluster_center)
+
+        if not customer_detected:
+            rospy.loginfo("No customer detected in the cluster, checking the other cluster...")
+
+            if cluster_center is cluster_center_1:
+                cluster_center = cluster_center_2
+            else:
+                cluster_center = cluster_center_1
+
+            customer_detected = self.customer_detection(cluster_center)
+
+        if customer_detected:
+            rospy.loginfo("Customer detected in the cluster")
+        else:
+            rospy.loginfo("No customer detected in both clusters, present action aborted!")
+            self._as.set_aborted()
+            return
 
         # Step 6: wait until part not present in gripper, or timeout
         timeout = rospy.Time.now() + rospy.Duration(10)

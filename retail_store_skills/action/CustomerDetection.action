@@ -1,0 +1,7 @@
+# Define your action message
+---
+# Define the feedback message
+bool customer_detected
+---
+# Define the result message
+bool customer_detected

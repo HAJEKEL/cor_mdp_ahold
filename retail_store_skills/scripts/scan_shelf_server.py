@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import rospy
 import actionlib
-from retail_store_skills.msg import *
+from retail_store_skills.msg import ScanShelfAction, ScanShelfResult
 from geometry_msgs.msg import PoseStamped, Point, Quaternion
 from franka_vacuum_gripper.msg import *
 from std_msgs.msg import Empty
@@ -43,26 +43,24 @@ class ScanShelf(object):
         self.vacuum_state_subscriber = rospy.Subscriber(
             "/franka_vacuum_gripper/vacuum_state", VacuumState, self.vacuum_state_cb
         )
-
         # Transform listener to look for april tags
         self._tl = tf.TransformListener()
 
         self._as.start()
+        rospy.loginfo("Scan shelf action server started")
 
 
     def vacuum_state_cb(self, msg: VacuumState):
         self._vacuum_state = msg
 
-    def execute_cb(self, goal: ScanShelfGoal):
+    def execute_cb(self, req):
         if self._vacuum_state.part_present:
             rospy.loginfo(f'Part already present, look around action aborted!')
             self._as.set_aborted()
             return
 
-        result = ScanShelfResult()
-
         # Step 1: Move arm to start position
-        start_pos = [goal.shelf_direction, -0.8, 0.0, -2.5, 0.0, 3.1, 0.8]
+        start_pos = [req.shelf_direction, -0.8, 0.0, -2.5, 0.0, 3.1, 0.8]
         self._group.go(start_pos, wait=True)
         rospy.loginfo(f'Arm moved to start position')
 
@@ -78,13 +76,13 @@ class ScanShelf(object):
         for position in positions:
             if self._as.is_preempt_requested():
                 self._as.set_preempted()
-                return
+                break
             self._group.go(position, wait=True)
 
 
         # Step 3: Check if there are any of the april tags that we want
         frames = self._tl.getFrameStrings()
-        wanted_tags = range(goal.min_tag_id, goal.max_tag_id + 1)
+        wanted_tags = range(req.min_tag_id, req.max_tag_id + 1)
 
         rospy.loginfo(f"Looking for tags {wanted_tags}")
 
@@ -95,8 +93,7 @@ class ScanShelf(object):
 
         if not found_tags:
             rospy.loginfo(f"No april tags found!")
-            self._as.set_aborted(result)
-            return result
+            self._as.set_aborted()
 
         rospy.loginfo(f"Found tags: {found_tags}")
 
@@ -111,10 +108,10 @@ class ScanShelf(object):
         rospy.loginfo(f"Closest tag is tag {closest_tag[1]}")
 
         # add the closest tag to the result
-        result.tag_id = closest_tag[1]
-        self._as.set_succeeded(result)
+        target_tag_id = closest_tag[1]
+        self._as.set_succeeded(ScanShelfResult(target_tag_id))
 
-        return result
+        return
 
 
 

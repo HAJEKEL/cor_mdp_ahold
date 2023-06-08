@@ -62,7 +62,7 @@ class ScanProcessor:
             depth = y_max - y_min
     
             #if 0.2 < width < 1.2 and 0.2 < depth < 1.2:
-            if 0 < width < 0.6 and 0 < depth < 0.6:
+            if 0 < width < 1 and 0 < depth < 1:
 
                 customer_like_clusters.append(cluster)
         return customer_like_clusters

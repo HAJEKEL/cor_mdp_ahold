@@ -98,18 +98,17 @@ class PresentActionServer(object):
         rospy.loginfo(f"Calculated rotation angle has been set as desired joint position")
         
         # Step 4.5: Adjust the position of the last joint by 90 degrees
-        joint_positions[-1] += math.pi/2  # Rotate by 90 degrees (pi/2 radians)
-        rospy.loginfo(f"adjusted the desired last joint position")
+        joint_positions[-2] += math.pi/2  # Rotate by 90 degrees (pi/2 radians)
+        rospy.loginfo(f"Calculated the desired joint angle of the before last link and set as desired joint position")
 
         # Step 5: Set the target joint positions and move the arm
         self._group.set_joint_value_target(joint_positions)
         succeeded = self._group.go(wait=True)
         if succeeded:
-            rospy.loginfo(f"First joint rotated with the calculated joint angle")
-
+            rospy.loginfo(f"First joint and before last joint rotated with the calculated joint angles")
         if not succeeded:
             self._as.set_aborted()
-            rospy.loginfo(f"Could not rotate the arm to the desired calculated angle")
+            rospy.loginfo(f"Could not rotate the arm to the desired calculated angles")
         
 
         # Step 6: wait until part not present in gripper

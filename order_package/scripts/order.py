@@ -6,7 +6,7 @@ from customer_interface import CustomerInterface
 import rospy
 import pandas as pd
 
-box_cap = 10
+box_cap = 5
 
 # Check order size
 def Split_order(order_list):

@@ -62,7 +62,7 @@ class ScanProcessor:
             depth = y_max - y_min
     
             #if 0.2 < width < 1.2 and 0.2 < depth < 1.2:
-            if 0 < width < 1 and 0 < depth < 1:
+            if 0 < width < 1.2 and 0 < depth < 1.2:
 
                 customer_like_clusters.append(cluster)
         return customer_like_clusters
@@ -84,7 +84,9 @@ class ScanProcessor:
         return cluster_centers
 
     def publish_closest_cluster_frame(self, cluster_centers, max_clusters=3):
-        # Get the closest cluster center (assuming only one cluster is considered here)
+        # Sort the cluster centers on distance, closest cluster gets number 1
+        robot_position = [0, 0]  # Assuming the robot is at the origin [0, 0]
+        cluster_centers = sorted(cluster_centers, key=lambda center: np.linalg.norm(np.array(center) - robot_position))
 
         # Create a TFMessage and add the TransformStamped message to it
         tf_message = tf2_msgs.msg.TFMessage()

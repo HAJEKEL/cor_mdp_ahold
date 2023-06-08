@@ -137,7 +137,7 @@ class PickActionServer(object):
         rospy.loginfo(f"Pick action holding pose {'succeeded' if succeeded else 'failed'}")
 
         if succeeded and not self._as.is_preempt_requested():
-            self._as.set_succeeded()
+            self._as.set_succeeded(PickResult(True))
         else:
             self._as.set_aborted()
 

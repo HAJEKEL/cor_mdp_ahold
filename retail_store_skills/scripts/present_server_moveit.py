@@ -7,14 +7,18 @@ import tf  # part of robot_state_publisher support for 3D transformations
 import moveit_commander  # Python API for MoveIt
 
 
+
 # Message types
-from retail_store_skills.msg import CustomerDetectionAction, CustomerDetectionGoal
 
 from retail_store_skills.msg import *
 from franka_vacuum_gripper.msg import VacuumState, DropOffGoal, DropOffAction
 import tf2_ros
 import tf2_geometry_msgs
 import math
+from std_msgs.msg import Bool
+import geometry_msgs.msg
+
+
 
 class PresentActionServer(object):
     def __init__(self, name: str) -> None:
@@ -27,6 +31,8 @@ class PresentActionServer(object):
         self._as = actionlib.SimpleActionServer(
             self._action_name, PresentAction, execute_cb=self.as_cb, auto_start=False
         )
+        # Subscribe to person detections:
+        rospy.Subscriber('/customer_detected', Bool, self.customer_detected_callback)
 
         # MoveIt interfaces
         self._scene = moveit_commander.PlanningSceneInterface()
@@ -48,6 +54,10 @@ class PresentActionServer(object):
         )
 
         self._as.start()
+
+    # Definint the callback function for the person detections
+    def customer_detected_callback(self, msg):
+        self.customer_detected = msg.data
 
     def vacuum_state_cb(self, msg: VacuumState):
         self._vacuum_state = msg
@@ -72,65 +82,50 @@ class PresentActionServer(object):
             self._as.set_aborted()
             return
 
-        # Step 1: Get the current joint positions
-        joint_positions = self._group.get_current_joint_values()
-        rospy.loginfo(f"Obtained the current joint positions")
-
-        # Step 2: Get the cluster center position from TFMessage
-        cluster_center = self.get_cluster_center_from_tf()
-        rospy.loginfo(f"Cluster center obtained")
-
-        if cluster_center is None:
-            rospy.loginfo(f"Cluster center not found, present action aborted!")
-            self._as.set_aborted()
-            return
-
-        # Step 3: Calculate the rotation angle based on cluster center position
-        target_x = cluster_center[0]
-        target_y = cluster_center[1]
-        current_x = joint_positions[0]  # Assuming the current rotation angle is stored in the first joint position
-        current_y = joint_positions[1]  # Assuming the current y position is stored in the second joint position
-
-        rotation_angle = math.atan2(target_y - current_y, target_x - current_x)
-        rospy.loginfo(f"Rotation angle calculated")
-
-        # Step 4: Rotate the first joint by the calculated angle
-        joint_positions[0] += rotation_angle
-        print(joint_positions)
-        rospy.loginfo(f"Calculated rotation angle has been set as desired joint position")
         
-        # Step 4.5: Adjust the position of the last joint by 90 degrees
-        joint_positions[-2] += math.pi/2  # Rotate by 90 degrees (pi/2 radians)
-        rospy.loginfo(f"Calculated the desired joint angle of the before last link and set as desired joint position")
+        # Step 2: Get the cluster center position from TFMessage for cluster 1
+        cluster_center_1 = self.get_cluster_center_from_tf("frame_cluster_1")
+        rospy.loginfo(f"Cluster center from the first cluster obtained")
 
-        # Step 5: Set the target joint positions and move the arm
-        self._group.set_joint_value_target(joint_positions)
-        succeeded = self._group.go(wait=True)
-        if succeeded:
-            rospy.loginfo(f"First joint and before last joint rotated with the calculated joint angles")
-        if not succeeded:
-            self._as.set_aborted()
-            rospy.loginfo(f"Could not rotate the arm to the desired calculated angles")
-        
-        # Step 5.5: Check if the cluster is a human
-        customer_detected = self.customer_detection(cluster_center)
+        # Step 3: Check if cluster 1 is a human
+        if cluster_center_1 is not None:
+            # Move the arm to point at cluster 1
+            self.point_arm_to_cluster(cluster_center_1)
 
-        if not customer_detected:
-            rospy.loginfo("No customer detected in the cluster, checking the other cluster...")
+            # Step 4: Perform customer detection on cluster 1
+            customer_detected_1 = self.customer_detection()
 
-            if cluster_center is cluster_center_1:
-                cluster_center = cluster_center_2
-            else:
+            if customer_detected_1:
+                rospy.loginfo("Customer detected in cluster 1")
                 cluster_center = cluster_center_1
-
-            customer_detected = self.customer_detection(cluster_center)
-
-        if customer_detected:
-            rospy.loginfo("Customer detected in the cluster")
+            else:
+                rospy.loginfo("No customer detected in cluster 1, checking cluster 2...")
         else:
-            rospy.loginfo("No customer detected in both clusters, present action aborted!")
-            self._as.set_aborted()
-            return
+            rospy.loginfo("Cluster 1 center not found, checking cluster 2...")
+
+            # Step 5: Get the cluster center position from TFMessage for cluster 2
+            cluster_center_2 = self.get_cluster_center_from_tf("frame_cluster_2")
+            rospy.loginfo(f"Cluster center from the second cluster obtained")
+
+            # Step 6: Check if cluster 2 is a human
+            if cluster_center_2 is not None:
+                # Move the arm to point at cluster 2
+                self.point_arm_to_cluster(cluster_center_2)
+
+                # Step 7: Perform customer detection on cluster 2
+                customer_detected_2 = self.customer_detection()
+
+                if customer_detected_2:
+                    rospy.loginfo("Customer detected in cluster 2")
+                    cluster_center = cluster_center_2
+                else:
+                    rospy.loginfo("No customer detected in cluster 2, present action aborted!")
+                    self._as.set_aborted()
+                    return
+            else:
+                rospy.loginfo("Cluster 2 center not found, present action aborted!")
+                self._as.set_aborted()
+                return
 
         # Step 6: wait until part not present in gripper, or timeout
         timeout = rospy.Time.now() + rospy.Duration(10)
@@ -164,10 +159,25 @@ class PresentActionServer(object):
 
         self._as.set_succeeded()
 
-    def get_cluster_center_from_tf(self):
+    def customer_detection(self):
+        # Perform customer detection
+
+        # Example logic:
+        # Access the customer detection feedback received from the subscriber
+
+        if self.customer_detected:
+            rospy.loginfo("Customer detected in the frame")
+            return True
+        else:
+            rospy.loginfo("No customer detected in the frame")
+            return False
+
+
+
+    def get_cluster_center_from_tf(self,frame_id):
         try:
             # Retrieve the latest transform from "base_link" to "frame_cluster_1"
-            trans, _ = self._tl.lookupTransform("base_link", "frame_cluster_1", rospy.Time())
+            trans, _ = self._tl.lookupTransform("base_link", frame_id, rospy.Time())
             transform = geometry_msgs.msg.Transform()
             transform.translation.x = trans[0]
             transform.translation.y = trans[1]
@@ -176,6 +186,37 @@ class PresentActionServer(object):
         except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
             rospy.loginfo("Error retrieving cluster center from TF")
             return None
+
+    def point_arm_to_cluster(self, cluster_center):
+        # Step 1: Get the current joint positions
+        joint_positions = self._group.get_current_joint_values()
+        rospy.loginfo(f"Obtained the current joint positions")
+
+        # Step 3: Calculate the rotation angle based on cluster center position
+        target_x = cluster_center[0]
+        target_y = cluster_center[1]
+        current_x = joint_positions[0]  # Assuming the current rotation angle is stored in the first joint position
+        current_y = joint_positions[1]  # Assuming the current y position is stored in the second joint position
+
+        rotation_angle = math.atan2(target_y - current_y, target_x - current_x)
+        rospy.loginfo(f"Rotation angle calculated")
+
+        # Step 4: Rotate the first joint by the calculated angle
+        joint_positions[0] += rotation_angle
+        rospy.loginfo(f"Calculated rotation angle has been set as desired joint position")
+
+        # Step 4.5: Adjust the position of the last joint by 90 degrees
+        joint_positions[-2] += math.pi / 2  # Rotate by 90 degrees (pi/2 radians)
+        rospy.loginfo(f"Calculated the desired joint angle of the before last link and set as desired joint position")
+
+        # Step 5: Set the target joint positions and move the arm
+        self._group.set_joint_value_target(joint_positions)
+        succeeded = self._group.go(wait=True)
+        if succeeded:
+            rospy.loginfo(f"First joint and before last joint rotated with the calculated joint angles")
+        if not succeeded:
+            self._as.set_aborted()
+            rospy.loginfo(f"Could not rotate the arm to the desired calculated angles")
 
 
 

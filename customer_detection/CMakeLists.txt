@@ -9,7 +9,6 @@ project(customer_detection)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   cv_bridge
-  numpy
   rospy
   sensor_msgs
 )

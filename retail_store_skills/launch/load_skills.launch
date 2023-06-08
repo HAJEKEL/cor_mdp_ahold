@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
-  <param name="arm_home_position" value = "[0.0, -0.8, 0.0, -2.5, 0.5, 3.1, 0.8]" />
-
+    <param name="arm_home_position" value = "[0.0, -1.2, 0.0, -2.0, 0.0, 2.0, 0.8]" />
 
   <arg name="pick_namespace" default="pick_server" />
   <node pkg="retail_store_skills" name="$(arg pick_namespace)" type="pick_server_moveit.py" output="screen" />

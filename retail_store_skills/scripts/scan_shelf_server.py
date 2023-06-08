@@ -60,7 +60,8 @@ class ScanShelf(object):
             return
 
         # Step 1: Move arm to start position
-        start_pos = [req.shelf_direction, -0.8, 0.0, -2.5, 0.0, 3.1, 0.8]
+        start_pos = [0.0, -1.2, 0.0, -2.0, 0.0, 2.0, 0.8]
+        start_pos[0] = req.shelf_direction
         self._group.go(start_pos, wait=True)
         rospy.loginfo(f'Arm moved to start position')
 

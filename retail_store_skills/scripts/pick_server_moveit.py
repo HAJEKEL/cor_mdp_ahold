@@ -66,7 +66,8 @@ class PickActionServer(object):
 
         # Step 1: Joint goal start position
         rospy.loginfo('Pick action moving to start pos')
-        start_pos = [0.0, -0.8, 0.0, -2.5, 0.0, 3.1, 0.8]
+        start_pos = [0.0, -1.2, 0.0, -2.0, 0.0, 2.0, 0.8]
+
         self._group.go(start_pos, wait=True)
         rospy.loginfo('Pick action finished moving to start pos')
 
@@ -125,24 +126,18 @@ class PickActionServer(object):
         goal.pose.position.z += 0.15
         goal = self._tl.transformPose("map", goal) 
         (plan, _) = self._group.compute_cartesian_path([goal.pose], 0.02, 0.0)
+
         succeeded = self._group.execute(plan, wait=True)
         rospy.loginfo(f"Pick action backwards {'succeeded' if succeeded else 'failed'}")
+
         if not succeeded or self._as.is_preempt_requested():
             self._as.set_aborted()
             return
 
-        # Step 6: go back to holding pose
-        holding_pos = [-0.0, -0.8, 0.0, -2.3, 0.0, 1.6, 0.8] 
-        succeeded = self._group.go(holding_pos, wait=True)
-        rospy.loginfo(f"Pick action holding pose {'succeeded' if succeeded else 'failed'}")
 
-        if succeeded and not self._as.is_preempt_requested():
-            self._as.set_succeeded(PickResult(True))
-        else:
-            self._as.set_aborted()
-
+        # if we arrive here, the pick action was successful
+        self._as.set_succeeded(PickResult(True))
         self._collision_box_interface.remove_box(box_name="basket_box")
-        #self._collision_box_interface.remove_shelf_collision_boxes(box_name="product_box")
 
         return
 

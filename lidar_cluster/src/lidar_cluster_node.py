@@ -122,7 +122,6 @@ class ScanProcessor:
         
         # Publish the TFMessage
         self.tf_publisher.publish(tf_message)
-        rospy.loginfo('Published TF message: {}'.format(tf_message))
 
 
 

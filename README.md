@@ -53,7 +53,8 @@ The packages that we developed are:
 - [the voice_requests package](voice_requests): This package contains the chatGPT-based voice assistant functionality.
 - [the retail_store_skills pakcage](retail_store_skills): This package contains action servers for the skills that the robot performs.
 - [the flexBE package](https://gitlab.tudelft.nl/cor/ro47007/2023/team-20/albert_flexbe): This package contains the FlexBE states and behaviors that we use for the complex behavioral control of our robot.
-
+- [the customer_detection package](customer_detection): This package contains a node that detects customers in an image using the HOG (Histogram of Oriented Gradients) method. 
+- [the lidar_cluster package](lidar_cluster): This package contains a node that processes laser scan data and generates TF (Transform) messages for detected clusters in the environment. 
 
 Information about these packages can be found in their respective READMEs (click on the links).
 
@@ -123,7 +124,7 @@ rosdep update
 rosdep install --from-paths . --ignore-src -y
 ```
 
-The voice control functionality has the following dependencies.
+The voice control functionality has the following dependencies:
 
 ```bash
 sudo apt-get install libasound-dev portaudio19-dev libportaudio2 libportaudiocpp0
@@ -132,6 +133,18 @@ sudo apt-get install libasound-dev portaudio19-dev libportaudio2 libportaudiocpp
 pip install pyaudio
 # We also need to install the google test to speech plugin, as well ass the speech recognition package:
 pip install gTTs SpeechRecognition
+```
+
+The customer_detection package has the following dependencies:
+```bash
+sudo apt-get install ros-noetic-cv-bridge
+```
+```bash
+sudo apt-get install python3-opencv
+```
+The lidar_cluster package has the following dependencies:
+```bash
+pip install scikit-learn
 ```
 
 Finally, we build the packages using catkin.
@@ -157,7 +170,7 @@ To start the packages that are developed for this project, run these commands in
 roslaunch order_package order_handler.launch 
 # voice assistant
 roslaunch voice_requests voice_requests.launch 
-# action servers for skills
+# action servers for skills (this launch file also starts up the lidar_cluster and customer_detection nodes)
 roslaunch retail_store_skills load_skills.launch 
 ```
 

@@ -26,5 +26,8 @@
   <arg name="human_detection_namespace" default="human_detector" />
   <node pkg="lidar_cluster" name="$(arg human_detection_namespace)" type="lidar_cluster_node.py" output="screen" />
 
+  <arg name="customer_detection_namespace" default="customer_detection_node" />
+  <node pkg="customer_detection" name="$(arg customer_detection_namespace)" type="customer_detection_node.py" output="screen" />
+
   <include file="$(find retail_store_skills)/launch/apriltag_detection.launch"/>
 </launch>

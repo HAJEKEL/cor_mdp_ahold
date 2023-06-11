@@ -87,7 +87,7 @@ class PresentActionServer(object):
 
         # Get the cluster center from the first cluster
         cluster_center_1 = self.get_cluster_center_from_tf("frame_cluster_1")
-        rospy.loginfo(f"Cluster center from the first cluster obtained")
+        rospy.loginfo("Obtained cluster center from the first cluster.")
 
         if cluster_center_1 is not None:
             # Point the arm to the cluster center of the first cluster
@@ -101,31 +101,38 @@ class PresentActionServer(object):
                 cluster_center = cluster_center_1
             else:
                 rospy.loginfo("No customer detected in cluster 1, checking cluster 2...")
+                cluster_center_2 = self.get_cluster_center_from_tf("frame_cluster_2")
+                rospy.loginfo("Obtained cluster center from the second cluster.")
+
+                if cluster_center_2 is not None:
+                    # Point the arm to the cluster center of the second cluster
+                    self.point_arm_to_cluster(cluster_center_2)
+
+                    # Check if a customer is detected in the second cluster
+                    customer_detected_2 = self.customer_detection()
+
+                    if customer_detected_2:
+                        rospy.loginfo("Customer detected in cluster 2")
+                        cluster_center = cluster_center_2
+                    else:
+                        rospy.loginfo("No customer detected in cluster 2, presenting at default location.")
+                        # Move joints to default present position
+                        present_pos = [-3.14, -0.8, 0.0, -2.3, 0.0, 1.6, 0.8]
+                        succeeded = self._group.go(present_pos, wait=True)
+                        if not succeeded:
+                            rospy.loginfo("Unable to move to default present location, present action aborted!")
+                            self._as.set_aborted()
+                            return
         else:
-            rospy.loginfo("Cluster 1 center not found, checking cluster 2...")
-
-            # Get the cluster center from the second cluster
-            cluster_center_2 = self.get_cluster_center_from_tf("frame_cluster_2")
-            rospy.loginfo(f"Cluster center from the second cluster obtained")
-
-            if cluster_center_2 is not None:
-                # Point the arm to the cluster center of the second cluster
-                self.point_arm_to_cluster(cluster_center_2)
-
-                # Check if a customer is detected in the second cluster
-                customer_detected_2 = self.customer_detection()
-
-                if customer_detected_2:
-                    rospy.loginfo("Customer detected in cluster 2")
-                    cluster_center = cluster_center_2
-                else:
-                    rospy.loginfo("No customer detected in cluster 2, present action aborted!")
-                    self._as.set_aborted()
-                    return
-            else:
-                rospy.loginfo("Cluster 2 center not found, present action aborted!")
+            rospy.loginfo("No clusters found, presenting at default location.")
+            # Move joints to default present position
+            present_pos = [-3.14, -0.8, 0.0, -2.3, 0.0, 1.6, 0.8]
+            succeeded = self._group.go(present_pos, wait=True)
+            if not succeeded:
+                rospy.loginfo("Unable to move to default present location, present action aborted!")
                 self._as.set_aborted()
                 return
+
 
         timeout = rospy.Time.now() + rospy.Duration(10)
 

@@ -1,15 +1,9 @@
 #!/usr/bin/env python3
 
-# ROS packages
 import rospy
 import actionlib
-import tf  # part of robot_state_publisher support for 3D transformations
-import moveit_commander  # Python API for MoveIt
-
-
-
-# Message types
-
+import tf
+import moveit_commander
 from retail_store_skills.msg import *
 from franka_vacuum_gripper.msg import VacuumState, DropOffGoal, DropOffAction
 import tf2_ros
@@ -19,29 +13,32 @@ from std_msgs.msg import Bool
 import geometry_msgs.msg
 
 
-
 class PresentActionServer(object):
-    def __init__(self, name: str) -> None:
-        # Read config
+    def __init__(self, name: str)->None:
         self.simulation = True  # rospy.get_param("simulation")
 
-        # Initialize action server
+        # Set the rate at which the node operates
         self._rate = rospy.Rate(20)
+
+        # Initialize the action server
         self._action_name = name
         self._as = actionlib.SimpleActionServer(
             self._action_name, PresentAction, execute_cb=self.as_cb, auto_start=False
         )
-        # Subscribe to person detections:
+
+        # Subscribe to the customer detection topic
         rospy.Subscriber('/customer_detected', Bool, self.customer_detected_callback)
 
-        # MoveIt interfaces
+        # Initialize MoveIt components
         self._scene = moveit_commander.PlanningSceneInterface()
         self._group = moveit_commander.MoveGroupCommander("panda_arm")
         self._robot = moveit_commander.RobotCommander()
-        self._group.set_max_velocity_scaling_factor(0.6)  # Increase group velocity
+        self._group.set_max_velocity_scaling_factor(0.6)
+
+        # Initialize TF listener
         self._tl = tf.TransformListener()
 
-        # Initialize vacuum gripper action client and related variable
+        # Initialize the drop-off action client
         self._dropoff_client = actionlib.SimpleActionClient(
             "/franka_vacuum_gripper/dropoff", DropOffAction
         )
@@ -49,50 +46,54 @@ class PresentActionServer(object):
         self._dropoff_client.wait_for_server()
         rospy.loginfo(f"dropoff server found")
 
+        # Subscribe to the vacuum state topic
         self.vacuum_state_subscriber = rospy.Subscriber(
             "/franka_vacuum_gripper/vacuum_state", VacuumState, self.vacuum_state_cb
         )
 
+        # Start the action server
         self._as.start()
 
-    # Definint the callback function for the person detections
     def customer_detected_callback(self, msg):
+        # Callback function for customer detection updates
         self.customer_detected = msg.data
 
     def vacuum_state_cb(self, msg: VacuumState):
+        # Callback function for vacuum state updates
         self._vacuum_state = msg
 
     def as_cb(self, req):
         rospy.loginfo(f"Present action called")
 
+        # Check if the part is present before starting the action
         if not self._vacuum_state.part_present:
             rospy.loginfo(f"Part not present, present action aborted!")
             self._as.set_aborted()
             return
 
+        rospy.loginfo("Present action moving to start position")
 
-        # Step 0: Joint goal start position
-        rospy.loginfo("Present action moving to start pos")
+        # Move the arm to the start position
         start_pos = [-0.0, -0.8, 0.0, -2.3, 0.0, 1.6, 0.8]
         succeeded = self._group.go(start_pos, wait=True)
-        rospy.loginfo("Present action finished moving to start pos")
 
+        rospy.loginfo("Present action finished moving to start position")
+
+        # Check if the arm successfully moved to the start position
         if not succeeded:
             rospy.loginfo(f"Not able to move to start position, present action aborted!")
             self._as.set_aborted()
             return
 
-        
-        # Step 2: Get the cluster center position from TFMessage for cluster 1
+        # Get the cluster center from the first cluster
         cluster_center_1 = self.get_cluster_center_from_tf("frame_cluster_1")
         rospy.loginfo(f"Cluster center from the first cluster obtained")
 
-        # Step 3: Check if cluster 1 is a human
         if cluster_center_1 is not None:
-            # Move the arm to point at cluster 1
+            # Point the arm to the cluster center of the first cluster
             self.point_arm_to_cluster(cluster_center_1)
 
-            # Step 4: Perform customer detection on cluster 1
+            # Check if a customer is detected in the first cluster
             customer_detected_1 = self.customer_detection()
 
             if customer_detected_1:
@@ -103,16 +104,15 @@ class PresentActionServer(object):
         else:
             rospy.loginfo("Cluster 1 center not found, checking cluster 2...")
 
-            # Step 5: Get the cluster center position from TFMessage for cluster 2
+            # Get the cluster center from the second cluster
             cluster_center_2 = self.get_cluster_center_from_tf("frame_cluster_2")
             rospy.loginfo(f"Cluster center from the second cluster obtained")
 
-            # Step 6: Check if cluster 2 is a human
             if cluster_center_2 is not None:
-                # Move the arm to point at cluster 2
+                # Point the arm to the cluster center of the second cluster
                 self.point_arm_to_cluster(cluster_center_2)
 
-                # Step 7: Perform customer detection on cluster 2
+                # Check if a customer is detected in the second cluster
                 customer_detected_2 = self.customer_detection()
 
                 if customer_detected_2:
@@ -127,9 +127,9 @@ class PresentActionServer(object):
                 self._as.set_aborted()
                 return
 
-        # Step 6: wait until part not present in gripper, or timeout
         timeout = rospy.Time.now() + rospy.Duration(10)
 
+        # Wait until the part is no longer present in the gripper or timeout is reached
         while self._vacuum_state.part_present:
             rospy.loginfo("Part present, waiting...")
             if rospy.Time.now() > timeout:
@@ -139,12 +139,13 @@ class PresentActionServer(object):
 
             self._rate.sleep()
 
-        # Step 7: if part not present, initialize dropoff
         rospy.loginfo(f"Turning off the vacuum")
+
+        # Send a drop-off goal to the vacuum gripper
         goal = DropOffGoal(timeout=10)
         self._dropoff_client.send_goal(goal)
 
-        # Step 8: return to home position
+        # Return to the home position after drop-off is completed
         succeeded = self._group.go(start_pos, wait=True)
         if succeeded:
             rospy.loginfo(f"Returned to home position")
@@ -156,15 +157,10 @@ class PresentActionServer(object):
             return
 
         rospy.loginfo(f"Part has been picked by customer")
-
         self._as.set_succeeded()
 
     def customer_detection(self):
-        # Perform customer detection
-
-        # Example logic:
-        # Access the customer detection feedback received from the subscriber
-
+        # Example logic for customer detection
         if self.customer_detected:
             rospy.loginfo("Customer detected in the frame")
             return True
@@ -172,11 +168,9 @@ class PresentActionServer(object):
             rospy.loginfo("No customer detected in the frame")
             return False
 
-
-
-    def get_cluster_center_from_tf(self,frame_id):
+    def get_cluster_center_from_tf(self, frame_id):
         try:
-            # Retrieve the latest transform from "base_link" to "frame_cluster_1"
+            # Retrieve the cluster center position from the TF tree
             trans, _ = self._tl.lookupTransform("base_link", frame_id, rospy.Time())
             transform = geometry_msgs.msg.Transform()
             transform.translation.x = trans[0]
@@ -188,28 +182,25 @@ class PresentActionServer(object):
             return None
 
     def point_arm_to_cluster(self, cluster_center):
-        # Step 1: Get the current joint positions
         joint_positions = self._group.get_current_joint_values()
         rospy.loginfo(f"Obtained the current joint positions")
 
-        # Step 3: Calculate the rotation angle based on cluster center position
         target_x = cluster_center[0]
         target_y = cluster_center[1]
-        current_x = joint_positions[0]  # Assuming the current rotation angle is stored in the first joint position
-        current_y = joint_positions[1]  # Assuming the current y position is stored in the second joint position
+        current_x = joint_positions[0]
+        current_y = joint_positions[1]
 
+        # Calculate the rotation angle to point the arm towards the cluster center
         rotation_angle = math.atan2(target_y - current_y, target_x - current_x)
         rospy.loginfo(f"Rotation angle calculated")
 
-        # Step 4: Rotate the first joint by the calculated angle
+        # Adjust the joint positions to point the arm towards the cluster center
         joint_positions[0] += rotation_angle
         rospy.loginfo(f"Calculated rotation angle has been set as desired joint position")
-
-        # Step 4.5: Adjust the position of the last joint by 90 degrees
-        joint_positions[-2] += math.pi / 2  # Rotate by 90 degrees (pi/2 radians)
+        joint_positions[-2] += math.pi / 2
         rospy.loginfo(f"Calculated the desired joint angle of the before last link and set as desired joint position")
 
-        # Step 5: Set the target joint positions and move the arm
+        # Set the joint value target and move the arm
         self._group.set_joint_value_target(joint_positions)
         succeeded = self._group.go(wait=True)
         if succeeded:
@@ -217,7 +208,6 @@ class PresentActionServer(object):
         if not succeeded:
             self._as.set_aborted()
             rospy.loginfo(f"Could not rotate the arm to the desired calculated angles")
-
 
 
 if __name__ == "__main__":

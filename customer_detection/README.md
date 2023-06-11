@@ -4,9 +4,9 @@ This ROS package provides a node called "customer_detection_node" that detects c
 
 ## Dependencies
 
-- ROS (Robot Operating System) - Melodic or newer
-- `cv_bridge` Python package
-- OpenCV (with Python bindings)
+- ROS (Robot Operating System) noetic
+- `cv_bridge` Python package: This package is required for converting images between ROS messages and OpenCV images. 
+- OpenCV (with Python bindings): This library is used to import the HOG detector.
 
 ## Installation
 

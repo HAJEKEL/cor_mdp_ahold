@@ -47,7 +47,8 @@ class ScanProcessor:
         points = np.array(list(point_cloud2.read_points(cloud_msg, field_names=("x", "y", "z"))))
         db_scan = DBSCAN().fit(points)  # Use DBSCAN on the point cloud
         labels = db_scan.labels_
-        cluster_count = len(np.unique(labels))  # Count the number of clusters found
+        cluster_count = len(np.uniq[INFO] [1686474100.390857, 2251.041000]: No customer detected in cluster 1, checking cluster 2...
+ue(labels))  # Count the number of clusters found
         list_of_clusters = [points[labels == (i-1)] for i in range(cluster_count)]
         return list_of_clusters, cluster_count
 

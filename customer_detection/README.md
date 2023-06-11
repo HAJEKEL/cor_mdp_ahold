@@ -8,21 +8,6 @@ This ROS package provides a node called "customer_detection_node" that detects c
 - `cv_bridge` Python package: This package is required for converting images between ROS messages and OpenCV images. 
 - OpenCV (with Python bindings): This library is used to import the HOG detector.
 
-## Installation
-
-1. Clone the package into your ROS workspace's source directory:
-```
-cd <your_ros_workspace>/src
-git clone <package_url>
-```
-
-
-2. Build the package:
-```
-cd <your_ros_workspace>
-catkin_make
-```
-
 
 ## Usage
 

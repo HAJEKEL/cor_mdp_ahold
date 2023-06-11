@@ -7,24 +7,6 @@ This ROS package provides a node called "scan_processor" that processes laser sc
 - ROS (Robot Operating System) - Melodic or newer
 - `sklearn` Python package
 
-## Installation
-
-1. Clone the package into your ROS workspace's source directory:
-```bash
-cd <your_ros_workspace>/src
-```
-```bash
-git clone <package_url>
-```
-
-2. Build the package:
-```bash
-cd <your_ros_workspace>
-```
-```bash
-catkin_make
-```
-
 ## Usage
 
 1. Launch the `scan_processor` node:

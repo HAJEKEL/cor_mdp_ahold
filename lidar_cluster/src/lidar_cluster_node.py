@@ -1,16 +1,19 @@
-#!/usr/bin/env python3.8
+#!/usr/bin/env python3
 
-from sklearn.cluster import DBSCAN #sklearn installeren
-from sensor_msgs.msg import LaserScan
+import numpy as np
+from sklearn.cluster import DBSCAN #You have to install sklearn
+
+import rospy
 import tf2_ros
 import geometry_msgs.msg
 import tf2_msgs.msg
 import tf2_geometry_msgs
-import rospy
-import numpy as np
-from sensor_msgs.msg import LaserScan, PointCloud2
-from sensor_msgs.point_cloud2 import create_cloud_xyz32
 from sensor_msgs import point_cloud2
+
+
+from sensor_msgs.msg import LaserScan, PointCloud2
+from sensor_msgs.point_cloud2 import create_cloud_xyz32, read_points
+
 
 
 
@@ -23,8 +26,15 @@ class ScanProcessor:
         self.tf_broadcaster = tf2_ros.TransformBroadcaster()
         
         self.scan_subscriber = rospy.Subscriber('/front/scan', LaserScan, self.scan_callback)
-        self.tf_publisher = rospy.Publisher('/tf', tf2_msgs.msg.TFMessage, queue_size=10)
+        self.tf_publisher = rospy.Publisher('/tf', tf2_msgs.msg.TFMessage, queue_size=1) #queue size of 1 to prioritize real-time processing
         
+        # Parameters
+        self.min_width = rospy.get_param("~min_width", 0)
+        self.max_width = rospy.get_param("~max_width", 1.2)
+        self.min_depth = rospy.get_param("~min_depth", 0)
+        self.max_depth = rospy.get_param("~max_depth", 1.2)
+        self.max_clusters = rospy.get_param("~max_clusters", 3)
+    
     def scan_callback(self, scan):
         # Convert LaserScan to PointCloud2
         points = []
@@ -35,9 +45,9 @@ class ScanProcessor:
             z = 0.0  # Assuming a planar surface
             points.append([x, y, z])
 
+
         header = scan.header
         cloud_msg = create_cloud_xyz32(header, points)
-
         cluster_list, cluster_count = self.db_scan_scan(cloud_msg)
         customer_like_clusters = self.filter_customer_like_clusters(cluster_list)
         cluster_centers = self.calculate_cluster_centers(customer_like_clusters)
@@ -47,8 +57,7 @@ class ScanProcessor:
         points = np.array(list(point_cloud2.read_points(cloud_msg, field_names=("x", "y", "z"))))
         db_scan = DBSCAN().fit(points)  # Use DBSCAN on the point cloud
         labels = db_scan.labels_
-        cluster_count = len(np.uniq[INFO] [1686474100.390857, 2251.041000]: No customer detected in cluster 1, checking cluster 2...
-ue(labels))  # Count the number of clusters found
+        cluster_count = len(np.unique(labels))  # Count the number of clusters found
         list_of_clusters = [points[labels == (i-1)] for i in range(cluster_count)]
         return list_of_clusters, cluster_count
 
@@ -63,7 +72,7 @@ ue(labels))  # Count the number of clusters found
             depth = y_max - y_min
     
             #if 0.2 < width < 1.2 and 0.2 < depth < 1.2:
-            if 0 < width < 1.2 and 0 < depth < 1.2:
+            if self.min_width < width < self.max_width and self.min_depth < depth < self.max_depth:
 
                 customer_like_clusters.append(cluster)
         return customer_like_clusters
@@ -84,7 +93,8 @@ ue(labels))  # Count the number of clusters found
             cluster_centers.append(center)
         return cluster_centers
 
-    def publish_closest_cluster_frame(self, cluster_centers, max_clusters=3):
+
+    def publish_closest_cluster_frame(self, cluster_centers, max_clusters=None):
         # Sort the cluster centers on distance, closest cluster gets number 1
         robot_position = [0, 0]  # Assuming the robot is at the origin [0, 0]
         cluster_centers = sorted(cluster_centers, key=lambda center: np.linalg.norm(np.array(center) - robot_position))
@@ -92,9 +102,13 @@ ue(labels))  # Count the number of clusters found
         # Create a TFMessage and add the TransformStamped message to it
         tf_message = tf2_msgs.msg.TFMessage()
 
-        #maybe lidar_link
         # Get the transform from "base_link" to "frame_cluster_1"
+        #maybe lidar_link
+        if max_clusters is None:
+            max_clusters = self.max_clusters
         n_clusters=min(max_clusters, len(cluster_centers))
+        if n_clusters == 0:
+            rospy.loginfo("no clusters detected")
         for i in range(n_clusters):
             cluster_center = cluster_centers[i]
 
@@ -125,10 +139,12 @@ ue(labels))  # Count the number of clusters found
         self.tf_publisher.publish(tf_message)
 
 
-
 if __name__ == '__main__':
     try:
         scan_processor = ScanProcessor()
         rospy.spin()
     except rospy.ROSInterruptException:
         pass
+    except Exception as e:
+        rospy.logerr("An error occurred: %s", str(e))
+

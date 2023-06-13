@@ -22,6 +22,17 @@ When the "Present" action is called, the server performs the following steps:
 6. If no clusters are detected at all, serve the product at the default location.
 7. If all steps are executed successfully, mark the action as "succeeded"; otherwise, mark it as "aborted".
 
+### Example
+
+![-](./images/gazebo_person_restocking_trolley.png)
+![-](./images/rviz_person_restocking_trolley.png)
+In this example there are 3 clusters detetected. Cluster 1 represents a random cylinder, cluster 2 represents the customer and cluster 3 is part of the wall. The present server first checks the cylinder to see if the cylinder is the customer since it is the closest cluster center.  
+![-](./images/rviz_view_on_trolley.png)
+![-](./images/gazebo_person_view_on_trolley.png)
+The present server verifies that the cyclinder is not the customer using the customer detection node. It then checks the second closest cluster center and verifies that this cluster indeed represents the customer. 
+![-](./images/rviz_without_tf_person.png)
+![-](./images/gazebo_person.png)
+
 ## Place Action Server
 
 This ROS node implements a [place action server](./scripts/place_server_moveit.py) for the "Place in basket" action. The purpose of this node is to control a robot arm to place a product in the basket mounted at the back of the robot. 

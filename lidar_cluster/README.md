@@ -9,14 +9,16 @@ This ROS package provides a node called "scan_processor" that processes laser sc
 
 ## Usage
 
-1. Launch the `scan_processor` node:
+1. Run the `scan_processor` node:
 ```bash
-roslaunch scan_processor scan_processor.launch
+roslaunch rosrun lidar_cluster lidar_cluster_node.py
 ```
 
 2. The node subscribes to the `/front/scan` topic to receive LaserScan messages. Make sure to publish laser scan data on this topic.
 
 3. The processed cluster information is published as TF messages on the `/tf` topic.
+
+
 
 ## Node: scan_processor
 
@@ -32,11 +34,11 @@ roslaunch scan_processor scan_processor.launch
 
 ### Parameters
 
-- `~min_width` (float, default: 0.2)
+- `~min_width` (float, default: 0)
 - The minimum width of a valid cluster.
 - `~max_width` (float, default: 1.2)
 - The maximum width of a valid cluster.
-- `~min_depth` (float, default: 0.2)
+- `~min_depth` (float, default: 0)
 - The minimum depth of a valid cluster.
 - `~max_depth` (float, default: 1.2)
 - The maximum depth of a valid cluster.
@@ -53,6 +55,11 @@ roslaunch scan_processor scan_processor.launch
 - Cluster centers are calculated for the customer-like clusters.
 - The TF message for the closest clusters is generated and published on the `/tf` topic.
 
+## Example output
+
+![-](./images/gazebo_person_restocking_trolley.png)
+![-](./images/rviz_person_restocking_trolley.png)
+In this example there are 3 clusters detetected. Cluster 1 represents a random cilinder, cluster 2 is the customer and cluster 3 is part of the wall.
 ## Acknowledgments
 
 This package utilizes the following external libraries:

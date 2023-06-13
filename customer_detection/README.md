@@ -36,6 +36,14 @@ roslaunch customer_detection customer_detection.launch
 - `~info_message_rate` (float, default: 1)
 - The rate at which the node logs information messages (in seconds). Set to 0 to disable information messages.
 
+## Example
+
+![-](./images/gazebo_person_restocking_trolley.png)
+![-](./images/rviz_person_restocking_trolley.png)
+In this example there are 3 clusters detetected. Cluster 1 represents a random cylinder, cluster 2 is the customer and cluster 3 is part of the wall. The detector can be used to verify which cluster corresponds to the customer. 
+![-](./images/gazebo_person_view_on_trolley.png)
+![-](./images/gazebo_person.png)
+
 
 ## Acknowledgments
 

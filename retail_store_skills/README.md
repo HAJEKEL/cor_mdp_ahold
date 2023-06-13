@@ -5,17 +5,17 @@ This repository consists of two types of action servers: provided and self-made.
 
 ## Present Action Server
 
-The present_server implements an action server for the "Present" action. The purpose of this node is to control a robot arm to present an object to a customer. It relies on two additional nodes, the `lidar_cluster` node and the `customer_detection` node, from self-made packages.
+The [present_server](./scripts/present_server_moveit.py) implements an action server for the "Present" action. The purpose of this node is to control a robot arm to present an object to a customer. It relies on two additional nodes, the [`lidar_cluster`](../lidar_cluster/src/lidar_cluster_node.py) node and the [`customer_detection`](../customer_detection/src/customer_detection_node.py) node, from self-made packages.
 
 ### Functionality
 
 When the "Present" action is called, the server performs the following steps:
 
 1. Move the robot arm to a predefined start position.
-2. Utilize the `lidar_cluster` node to detect customer-like lidar clusters in the environment.
+2. Utilize the [`lidar_cluster`](../lidar_cluster/src/lidar_cluster_node.py) node to detect customer-like lidar clusters in the environment.
 3. If clusters are detected:
    - Point the arm towards the closest cluster center.
-   - Use the `customer_detection` node to check if a customer is present in that cluster.
+   - Use the [`customer_detection`](../customer_detection/src/customer_detection_node.py) node to check if a customer is present in that cluster.
    - If a customer is detected, keep the arm pointed towards the cluster center until the part (object) is no longer present in the gripper.
 4. If no customer is detected in the closest cluster, check the second closest cluster.
 5. If no customer is detected in any of the clusters, serve the product at a default location to the right of the robot.
@@ -24,11 +24,11 @@ When the "Present" action is called, the server performs the following steps:
 
 ## Place Action Server
 
-This ROS node implements an action server for the "Place" action. The purpose of this node is to control a robot arm to place a product in the basket mounted at the back of the robot. 
+This ROS node implements a [place action server](./scripts/place_server_moveit.py) for the "Place in basket" action. The purpose of this node is to control a robot arm to place a product in the basket mounted at the back of the robot. 
 
 ### Functionality
 
-When the "Place" action is called, the server performs the following steps:
+When the "Place in basket" action is called, the server performs the following steps:
 
 1. Check if the product is present in the gripper. If not, the place action is aborted.
 2. Add a collision box around the basket to ensure that the robot avoids collisions with it.
@@ -42,7 +42,7 @@ When the "Place" action is called, the server performs the following steps:
 
 ## Scan Shelf Action Server
 
-This ROS node implements an action server for the "Scan Shelf" action. The purpose of this node is to control a robot arm to scan a shelf and locate specific April tags.
+This ROS node implements a [scan shelf action server](./scripts/scan_shelf_server.py) for the "Scan Shelf" action. The purpose of this node is to control a robot arm to scan a shelf and locate specific April tags.
 
 ### Functionality
 
@@ -87,18 +87,18 @@ Pick a frame of the detected tags that you want to pick, for example: tag_18
 
 In yet another terminal window, run the following to execute a pick action:
 ```bash
-rosrun retail_store_skills scan_shelf_client.py
+rosrun retail_store_skills [scan_shelf_client.py](./scripts/example_action_clients/scan_shelf_client.py)
 ```
 ```bash
-rosrun retail_store_skills pick_client.py 18
+rosrun retail_store_skills [pick_client.py](./scripts/example_action_clients/pick_client.py) 18
 ```
 For presenting the product to a customer type in the terminal:
 ```bash
-rosrun retail_store_skills present_client.py 
+rosrun retail_store_skills [present_client.py](./scripts/example_action_clients/present_client.py) 
 ```
 For placing the product in the basket type in the terminal:
 ```bash
-rosrun retail_store_skills place_basket_client.py
+rosrun retail_store_skills [place_basket_client.py](./scripts/example_action_clients/place_basket_client.py)
 ```
 
 

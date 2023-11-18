@@ -1,7 +1,0 @@
-<library path="lib/libboxer_controllers">
-  <class name="boxer_control/BoxerLiftController" type="boxer_control::BoxerLiftController" base_class_type="controller_interface::ControllerBase">
-    <description>
-      BOXER's lift controller, a pass-through for position control of the integrated lift.
-    </description>
-  </class>
-</library>

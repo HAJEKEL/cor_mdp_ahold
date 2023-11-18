@@ -7,7 +7,8 @@
 <html>
 
 <head>
-    <title>Sky Navigator: Advanced Obstacle Avoidance System for Drones in Competition Scenarios</title>
+    <title>ALBERT: THE NEXT-GEN SUPERMARKET ASSISTANT
+        INTEGRATING ADVANCED AI FOR SEAMLESS IN-STORE AND ONLINE ORDER FULFILLMENT</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="assets/css/main.css" />
@@ -24,7 +25,8 @@
 
         <!-- Intro -->
         <div id="intro">
-            <h1>Sky Navigator: Advanced Obstacle Avoidance System for Drones in Competition Scenarios</h1>
+            <h1>ALBERT: THE NEXT-GEN SUPERMARKET ASSISTANT
+                INTEGRATING ADVANCED AI FOR SEAMLESS IN-STORE AND ONLINE ORDER FULFILLMENT</h1>
             <p>
                 <a href="https://www.linkedin.com/in/henk-jekel-748054259/" target="_blank">
                     <img src="images/linkedin_icon.png" alt="LinkedIn Pictogram" width="35" height="35">
@@ -76,30 +78,59 @@
             <article class="post featured">
                 <header class="major">
                     <span class="date">April 28, 2023</span>
-                    <h1><a>Sky Navigator: Advanced Obstacle Avoidance System for Drones in Competition Scenarios</a></h1>
+                    <h1><a>ALBERT: THE NEXT-GEN SUPERMARKET ASSISTANT
+                        INTEGRATING ADVANCED AI FOR SEAMLESS IN-STORE AND ONLINE ORDER FULFILLMENT</a></h1>
                 </header>
-                <a class="image fit"><img src="images/drone.gif" alt="EP50-reduce" /></a>
+                <a class="image fit"><img src="images/demo_MDP.gif" alt="EP50-reduce" /></a>
                 <h2>
                     Project summary
                 </h2>
                 <p>
-                    This project, conducted by H. Jekel at TU Delft - Aerospace Engineering, aimed to develop an autonomous obstacle avoidance system for a drone, targeting the largest distance coverage in a 10-minute flying contest. The team explored two primary methods: optical flow and color filtering. The optical flow method was adept at identifying obstacles and calculating distances between the drone’s camera and these obstacles, utilizing circular flight patterns for efficient detection and evasion. On the other hand, the color filtering approach allowed for the recognition of specific colors, facilitating obstacle detection. Despite the potential of the optical flow method, the team ultimately chose color filtering for the competition due to its simplicity and effectiveness in recognizing colored objects. The project culminated in successfully creating a drone equipped with an obstacle avoidance system capable of covering 67 meters in the contest, highlighting significant advancements in drone navigation and safety.
+                    This project aimed to create a comprehensive system for Albert, enabling order picking and assistance in
+                    supermarkets. The objective was to equip the robot with the ability to handle orders from both online
+                    and in-store customers by selecting the necessary products for them. The system encompasses various
+                    capabilities.
+                    To interact with customers, the robot utilizes an advanced voice interaction system powered by
+                    ChatGPT. This enables the robot to understand and fulfill product requests from in-store customers
+                    through voice commands. A user interface has also been implemented in order to select items for orders,
+                    meant to simulate orders coming in from online customers. During operation, the robot autonomously
+                    identifies, picks, and places products, utilizing the FlexBE system as a state machine to govern its
+                    behavior. After completing an order, the robot returns to a base station. Additionally, the robot employs
+                    sensors such as lidar, radar, and stereo cameras to detect customers and potential obstacles.
+                    By testing the enhanced capabilities of the Albert robot in simulations and real-world scenarios, we
+                    have found that the solution can be implemented with a reasonable level of reliability. The robot has
+                    successfully demonstrated its ability to pick orders from online customers within a store environment
+                    while also providing assistance to in-store customers in a similar manner.                </p>
+                <h2>
+                    Prize Winners
+                </h2>
+                <p>
+                    With this project we won the prize for best robotics project of the Robotics Master Program at TU Delft 2022/2023. 
+                    <a class="image fit"><img src="images/first_prize.jpeg" alt="EP50-reduce" /></a>
+
                 </p>
                 <h2>
                     Project documents
                 </h2>
-
                 <p>
                     Report:
                 </p>
                 <ul class="actions special">
-                    <li><a href="autonomous_flight_of_micro_air_vehicles.pdf" class="button large">Download PDF</a></li>
+                    <li><a href="MDP_Final_Report_Group20.pdf" class="button large">Download PDF</a></li>
                 </ul>
                 <p>
                     Presentation:
                 </p>
+                <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+ padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+ border-radius: 8px; will-change: transform;">
+  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+    src="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAFlnK5iqNA&#x2F;view?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+  </iframe>
+</div>
+<a href="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAFlnK5iqNA&#x2F;view?utm_content=DAFlnK5iqNA&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener">Canva link presentation MDP group 20</a>
                 <ul class="actions special">
-                    <li><a href="MAV Group 1 Presentation (31 March).pdf" class="button large">Download PDF</a></li>
+                    <li><a href="MDP group 20.pdf" class="button large">Download PDF</a></li>
                 </ul>
                 <h2>
                     Code implementation
@@ -110,22 +141,18 @@
                 </p>
 
                 <ul class="actions special">
-                    <li><a href="https://github.com/HAJEKEL/afmav/tree/website"
+                    <li><a href="https://github.com/HAJEKEL/cor_mdp_ahold/tree/website"
                             class="button large">WEBSITE</a></li>
                 </ul>
                 <p> Code to reproduce the results:
                 </p>
                 <ul class="actions special">
-                    <li><a href="https://github.com/HAJEKEL/afmav"
-                            class="button large">Thresholds</a></li>
+                    <li><a href="https://github.com/HAJEKEL/cor_mdp_ahold"
+                            class="button large">Extensive repository containing Alberts functionalities with integrated dependencies as submodules.</a></li>
                 </ul>
                 <ul class="actions special">
-                    <li><a href="https://github.com/HAJEKEL/paparazzi/tree/Optical_flow_circle"
-                            class="button large">Optical flow circle</a></li>
-                </ul>
-                <ul class="actions special">
-                    <li><a href="https://github.com/HAJEKEL/paparazzi/tree/orange"
-                            class="button large">Orange avoider</a></li>
+                    <li><a href="https://github.com/HAJEKEL/flex_albert_behaviors"
+                            class="button large">Created submodule that manages Albert's behavior</a></li>
                 </ul>
             </article>
 

@@ -1,0 +1,24 @@
+[submodule "apriltag_ros"]
+	path = apriltag_ros
+	url = https://github.com/AprilRobotics/apriltag_ros.git
+[submodule "apriltag"]
+	path = apriltag
+	url = https://github.com/AprilRobotics/apriltag.git
+[submodule "closest_link_attacher"]
+	path = closest_link_attacher
+	url = https://github.com/c-salmi/closest_link_attacher.git
+[submodule "realsense_gazebo_plugin"]
+	path = realsense_gazebo_plugin
+	url = https://github.com/pal-robotics/realsense_gazebo_plugin
+[submodule "franka_ros"]
+	path = franka_ros
+	url = https://github.com/tud-cor/franka_ros.git
+[submodule "flexbe_behavior_engine"]
+	path = flexbe_behavior_engine
+	url = https://github.com/team-vigir/flexbe_behavior_engine.git
+[submodule "flexbe_app"]
+	path = flexbe_app
+	url = https://github.com/FlexBE/flexbe_app.git
+[submodule "flex_albert_behaviors"]
+	path = flex_albert_behaviors
+	url = https://github.com/HAJEKEL/flex_albert_behaviors.git
